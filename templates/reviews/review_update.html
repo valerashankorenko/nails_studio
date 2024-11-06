@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% load django_bootstrap5 %}
+{% block title %}
+Редактирование отзыва
+{% endblock %}
+{% block content %}
+<div class="col d-flex justify-content-center">
+    <div class="card" style="width: 30rem;">
+      <div class="card-header text-center">
+        Редактирование отзыва
+      </div>
+      <div class="card-body text-center">  
+        <form method="post">
+          {% csrf_token %}
+          <div class="mb-3 text-center">
+            <label for="id_text" class="form-label">Ваш отзыв будет опубликован после проверки администратором</label>
+            <textarea name="text" cols="40" rows="10" maxlength="500" class="form-control" id="id_text">{{ review.text }}</textarea>
+          </div>
+          {% bootstrap_button button_type="submit" content="Сохранить" %}
+        </form>
+      </div>
+</div> 
+{% endblock %}

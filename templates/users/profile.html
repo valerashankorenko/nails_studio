@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% load django_bootstrap5 %}
+
+{% block title %}Личный кабинет{% endblock %}
+
+{% block content %}
+<div class="container">
+  <div class="row">
+    <div class="col-lg-8 offset-lg-2 col-md-10 offset-md-1">
+      <h3 class="mb-3 text-center">Личный кабинет: {{ user.get_full_name }}</h3>
+      <div class="text-center mb-4">
+        <p class="mb-1 text-dark">Регистрация: {{ user.date_joined|date:"d.m.Y в H:i" }}</p>
+      </div>
+
+      {% if user.is_authenticated and request.user == user %}
+      <div class="d-flex justify-content-center mb-4">
+        <a class="btn btn-outline-dark btn-sm me-2 shadow-sm" href="{% url 'users:edit_profile' %}">
+          <i class="bi bi-pencil"></i> Редактировать профиль
+        </a>
+        <a class="btn btn-outline-dark btn-sm shadow-sm" href="{% url 'password_change' %}">
+          <i class="bi bi-lock"></i> Изменить пароль
+        </a>
+      </div>
+      {% endif %}
+
+      <h5 class="text-center mb-4">Ниже Вы можете отредактировать или удалить свой отзыв</h5>
+
+      <div class="row justify-content-center">
+        {% if review_list %}
+          {% for review in review_list %}
+          <div class="col-lg-6 mb-4">
+            <div class="card shadow-sm" style="background-color: rgba(255, 255, 255, 0.5);">
+              <div class="card-body">
+                <p class="card-text">{{ review.text }}</p>
+              </div>
+              <div class="card-footer text-center">
+                <small class="text-dark">Опубликовано: {{ review.created_at|date:"d.m.Y в H:i" }}</small>
+              </div>
+              {% if user == review.author %}
+              <div class="card-footer text-center">
+                <a class="btn btn-outline-dark btn-sm me-2" href="{% url 'reviews:update_review' review.id %}">
+                  <i class="bi bi-pencil"></i> Отредактировать
+                </a>
+                <a class="btn btn-outline-danger btn-sm" href="{% url 'reviews:delete_review' review.id %}">
+                  <i class="bi bi-trash"></i> Удалить
+                </a>
+              </div>
+              {% endif %}
+            </div>
+          </div>
+          {% endfor %}
+        {% else %}
+        <div class="col-lg-8 text-center">
+          <p class="text-dark">У вас пока нет отзыва</p>
+          <a class="btn btn-outline-dark btn-sm me-2" href="{% url 'reviews:add_review' %}">
+            <i class="bi bi-pencil"></i> Оставить отзыв
+          </a>  
+        </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

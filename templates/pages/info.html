@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+
+{% block title %}Советы{% endblock %}
+
+{% block content %}
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="card" style="background-color: rgba(255, 255, 255, 0.5);">
+        <div class="card-header text-center">
+          <h4>Советы по уходу за ногтями</h4>
+        </div>
+        <div class="card-body">
+          {% for info in infos %}
+          <div class="card mb-3" style="background-color: rgba(255, 255, 255, 0.5);">
+            <div class="card-header">
+              <h5>{{ info.title }}</h5>
+            </div>
+            <div class="card-body">
+              <p class="truncated-text">{{ info.text|linebreaks|truncatewords_html:34 }}</p>
+              <a href="{% url 'pages:detail_info' info.id %}" class="btn btn-link" style="color: black">Читать полностью</a>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+
+      <!-- Пагинация -->
+      {% if is_paginated %}
+      <nav aria-label="Page navigation">
+        <ul class="pagination justify-content-center">
+          {% if page_obj.has_previous %}
+            <li class="page-item">
+              <a class="page-link" href="?page={{ page_obj.previous_page_number }}" aria-label="Предыдущая">
+                <span aria-hidden="true">&laquo; Предыдущая</span>
+              </a>
+            </li>
+          {% else %}
+            <li class="page-item disabled">
+              <span class="page-link" aria-hidden="true">&laquo; Предыдущая</span>
+            </li>
+          {% endif %}
+
+          {% for num in paginator.page_range %}
+            {% if num == page_obj.number %}
+              <li class="page-item active"><span class="page-link">{{ num }}</span></li>
+            {% else %}
+              <li class="page-item"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
+            {% endif %}
+          {% endfor %}
+
+          {% if page_obj.has_next %}
+            <li class="page-item">
+              <a class="page-link" href="?page={{ page_obj.next_page_number }}" aria-label="Следующая">
+                <span aria-hidden="true">Следующая &raquo;</span>
+              </a>
+            </li>
+          {% else %}
+            <li class="page-item disabled">
+              <span class="page-link" aria-hidden="true">Следующая &raquo;</span>
+            </li>
+          {% endif %}
+        </ul>
+      </nav>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}

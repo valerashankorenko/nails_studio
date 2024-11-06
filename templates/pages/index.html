@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}
+Главная
+{% endblock %}
+{% block content %}
+    <section class="first-section img-bg pb-70 mt-80">
+        <div class="container">
+            <div class="row align-items-center justify-content-center">
+                <div class="col-lg-8 text-center">
+                    <h1 class="mb-30 mt-60">Ваша фея маникюра</h1>
+                    <a href="{% url 'pages:contact' %}" class="main-btn btn-hover">Записаться на маникюр</a>
+                    <p class="lead mb-40">Преображение ваших ногтей до кончиков пальцев</p>
+                    <img class="img-fluid" src="{% static 'img/main-foto.png' %}" alt="Главное фото">
+                    <div class="text-uppercase mt-40">Приведи подругу - скидка обеим 10%</div>
+                </div>
+            </div>
+        </div>
+    </section>    
+    <section class="about-section pt-100 pb-70">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6">
+                    <div class="about-img justify-content-end d-flex">
+                        <img class="img-fluid" src="{% static 'img/marina.jpg' %}" alt="Фото Марины" style="max-width: 300px; height: auto;">
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="about-content">
+                        <h2 class="mb-30">Обо мне</h2>
+                        <p class="mb-20">Я Марина Руммо</p>
+                        <p class="mb-20">Будучи ребенком и далее я с большим удовольствием впитывала в себе знания и умения создавать красивые образы на бумаге, ткани и дереве.</p>
+                        <p class="mb-20">В дальнейшем я воплотила идею создания прекрасного в услугах маникюра.</p>
+                        <p class="mb-20">Счастлива, что мое любимое дело приносит удовольствие не только мне, но и вам!</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}
