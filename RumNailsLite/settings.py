@@ -116,3 +116,13 @@ CSRF_FAILURE_VIEW = 'pages.views.csrf_failure'
 LOGIN_REDIRECT_URL = 'pages:index'
 
 LOGIN_URL = 'login'
+
+# Конфигурация электронной почты
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.yandex.ru'
+EMAIL_PORT = 465
+EMAIL_USE_TLS = False
+EMAIL_USE_SSL = True
+EMAIL_HOST_USER = os.getenv('YANDEX_EMAIL_USER')
+EMAIL_HOST_PASSWORD = os.getenv('YANDEX_EMAIL_PASSWORD')
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER

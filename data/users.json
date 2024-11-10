@@ -1,0 +1,82 @@
+[
+    {
+        "username": "user1",
+        "password": "password1",
+        "email": "user1@example.com",
+        "phone_number": "+375291111111",
+        "first_name": "Иван",
+        "last_name": "Иванов"
+    },
+    {
+        "username": "user2",
+        "password": "password2",
+        "email": "user2@example.com",
+        "phone_number": "+375292222222",
+        "first_name": "Петр",
+        "last_name": "Петров"
+    },
+    {
+        "username": "user3",
+        "password": "password3",
+        "email": "user3@example.com",
+        "phone_number": "+375293333333",
+        "first_name": "Сергей",
+        "last_name": "Сергеев"
+    },
+    {
+        "username": "user4",
+        "password": "password4",
+        "email": "user4@example.com",
+        "phone_number": "+375294444444",
+        "first_name": "Александр",
+        "last_name": "Александров"
+    },
+    {
+        "username": "user5",
+        "password": "password5",
+        "email": "user5@example.com",
+        "phone_number": "+375295555555",
+        "first_name": "Мария",
+        "last_name": "Маринина"
+    },
+    {
+        "username": "user6",
+        "password": "password6",
+        "email": "user6@example.com",
+        "phone_number": "+375296666666",
+        "first_name": "Елена",
+        "last_name": "Еленина"
+    },
+    {
+        "username": "user7",
+        "password": "password7",
+        "email": "user7@example.com",
+        "phone_number": "+375297777777",
+        "first_name": "Дмитрий",
+        "last_name": "Дмитриев"
+    },
+    {
+        "username": "user8",
+        "password": "password8",
+        "email": "user8@example.com",
+        "phone_number": "+375298888888",
+        "first_name": "Анна",
+        "last_name": "Аннина"
+    },
+    {
+        "username": "user9",
+        "password": "password9",
+        "email": "user9@example.com",
+        "phone_number": "+375299999999",
+        "first_name": "Ольга",
+        "last_name": "Ольгина"
+    },
+    {
+        "username": "user10",
+        "password": "password10",
+        "email": "user10@example.com",
+        "phone_number": "+375291111112",
+        "first_name": "Игорь",
+        "last_name": "Игорев"
+    }
+]

@@ -1,0 +1,52 @@
+[
+    {
+        "text": "Отличный сервис, очень доволен!",
+        "author_id": 2,
+        "is_published": true
+    },
+    {
+        "text": "Услуга соответствует описанию.",
+        "author_id": 3,
+        "is_published": true
+    },
+    {
+        "text": "Не совсем то, что ожидал, но в целом неплохо.",
+        "author_id": 4,
+        "is_published": true
+    },
+    {
+        "text": "Хорошее качество, буду делать ещё.",
+        "author_id": 5,
+        "is_published": true
+    },
+    {
+        "text": "Плохое обслуживание, не рекомендую.",
+        "author_id": 6,
+        "is_published": true
+    },
+    {
+        "text": "Превосходный опыт, спасибо!",
+        "author_id": 7,
+        "is_published": true
+    },
+    {
+        "text": "Работа была быстрой, но не оправдала ожиданий.",
+        "author_id": 8,
+        "is_published": true
+    },
+    {
+        "text": "Все отлично, буду рекомендовать друзьям.",
+        "author_id": 9,
+        "is_published": true
+    },
+    {
+        "text": "Не очень доволен, ожидал большего.",
+        "author_id": 10,
+        "is_published": true
+    },
+    {
+        "text": "Очень понравилось, спасибо за маникюр!",
+        "author_id": 11,
+        "is_published": true
+    }
+]
