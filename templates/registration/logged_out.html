@@ -1,13 +1,13 @@
 {% extends "base.html" %}
 {% block content %}
   <div class="col d-flex justify-content-center">
-    <div class="card" style="width: 40rem;">
-      <div class="card-header">
+    <div class="card" style="width: 40rem; background-color: rgba(255, 255, 255, 0.5);">
+      <div class="card-header text-center">
         Вы вышли из системы!
       </div>
-      <div class="card-body">
-        <p><a href="{% url 'login' %}">Войти снова</a></p>
-        <p><a href="{% url 'pages:index' %}">На главную</a></p>
+      <div class="card-body text-center">
+        <p><a href="{% url 'login' %}" style="color: black">Войти снова</a></p>
+        <p><a href="{% url 'pages:index' %}" style="color: black">На главную</a></p>
       </div>
     </div>
   </div>

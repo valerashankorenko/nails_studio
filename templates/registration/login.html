@@ -16,7 +16,7 @@
     {% endif %}
   {% endif %}
   <div class="col d-flex justify-content-center">
-    <div class="card" style="width: 21rem;">
+    <div class="card" style="width: 21rem; background-color: rgba(255, 255, 255, 0.5);">
       <div class="card-header">
         Войти в систему
       </div>
@@ -25,10 +25,10 @@
           {% csrf_token %}
           {% bootstrap_form form %}
           <input type="hidden" name="next" value="{{ next }}">
-          {% bootstrap_button button_type="submit" content="Войти" %}
+          {% bootstrap_button button_type="submit" content="Войти" button_class="btn-dark"%}
         </form>
         <div>
-          <a href="{% url 'password_reset' %}">Забыли пароль?</a>
+          <a href="{% url 'password_reset' %}" style="color: black">Забыли пароль?</a>
         </div>
       </div>
     </div>

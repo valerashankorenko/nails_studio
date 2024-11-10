@@ -1,4 +1,7 @@
-/* Стили для навигационного меню */
+* {
+  box-sizing: border-box;
+  font-family: 'Ubuntu', sans-serif;
+}
 
 .pagination {
   margin-top: 20px;
@@ -8,6 +11,7 @@
 
 .pagination .page-link {
     color: black;
+    font-family: 'Ubuntu', sans-serif;
 }
 
 .pagination .active .page-link {
@@ -53,8 +57,13 @@ img {
   padding: 10px 0; /* Отступы сверху и снизу */
 }
 
+.navbar-nav .nav-link {
+    font-family: 'Ubuntu', sans-serif;
+    color: black;
+}
+
 .navbar-dark .navbar-nav .nav-link {
-  color: black; /* Цвет текста ссылок */
+    color: black;
 }
 
 .contact-icon {
@@ -70,12 +79,13 @@ img {
         text-decoration: none;
     }
     .card-header h3 {
-        font-weight: bold;
+        font-family: 'Ubuntu', sans-serif;
         color: #333;
         text-transform: uppercase;
     }
     .card-body {
         font-size: 18px;
+        font-family: 'Ubuntu', sans-serif;
     }
     .social-icons img {
         margin: 0 5px;
@@ -92,7 +102,7 @@ body {
     background-size: 1600% 1600%;
     animation: gradient 200s ease infinite;
     margin: 1rem;
-
+    font-family: 'Ubuntu', sans-serif;
 }
 
 .carousel-item img {
@@ -120,4 +130,7 @@ body {
     }
 }
 
+footer {
+    font-family: 'Ubuntu', sans-serif;
+}
 

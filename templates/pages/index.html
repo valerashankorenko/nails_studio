@@ -6,28 +6,32 @@
 {% block content %}
     <section class="first-section img-bg pb-70 mt-80">
         <div class="container">
-            <div class="row align-items-center justify-content-center">
-                <div class="col-lg-8 text-center">
+            <div class="row align-items-center justify-content-center text-center">
+                <div class="col-lg-8">
                     <h1 class="mb-30 mt-60">Ваша фея маникюра</h1>
                     <a href="{% url 'pages:contact' %}" class="main-btn btn-hover">Записаться на маникюр</a>
                     <p class="lead mb-40">Преображение ваших ногтей до кончиков пальцев</p>
-                    <img class="img-fluid" src="{% static 'img/main-foto.png' %}" alt="Главное фото">
-                    <div class="text-uppercase mt-40">Приведи подругу - скидка обеим 10%</div>
+                    <img class="img-fluid mx-auto d-block" src="{% static 'img/main-foto.png' %}" alt="Главное фото">
+                    <div class="text-uppercase mt-2 ">
+                        <p class="lead"> 
+                            <i class="fas fa-gift"></i> Приведи подругу - скидка обеим 10% 
+                        </p>
+                    </div>
                 </div>
             </div>
         </div>
     </section>    
     <section class="about-section pt-100 pb-70">
         <div class="container">
-            <div class="row align-items-center">
-                <div class="col-lg-6">
-                    <div class="about-img justify-content-end d-flex">
-                        <img class="img-fluid" src="{% static 'img/marina.jpg' %}" alt="Фото Марины" style="max-width: 300px; height: auto;">
+            <div class="row align-items-center justify-content-center">
+                <div class="col-lg-4 text-center">
+                    <div class="about-img">
+                        <img class="img-fluid mx-auto" src="{% static 'img/marina.jpg' %}" alt="Фото Марины" style="max-width: 300px; height: auto;">
                     </div>
                 </div>
                 <div class="col-lg-6">
                     <div class="about-content">
-                        <h2 class="mb-30">Обо мне</h2>
+                        <h2 class="mb-30 text-center">Обо мне</h2>
                         <p class="mb-20">Я Марина Руммо</p>
                         <p class="mb-20">Будучи ребенком и далее я с большим удовольствием впитывала в себе знания и умения создавать красивые образы на бумаге, ткани и дереве.</p>
                         <p class="mb-20">В дальнейшем я воплотила идею создания прекрасного в услугах маникюра.</p>
