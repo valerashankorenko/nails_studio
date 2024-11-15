@@ -1,17 +1,24 @@
 * {
-  box-sizing: border-box;
-  font-family: 'Ubuntu', sans-serif;
+    box-sizing: border-box;
+    font-family: 'Ubuntu', sans-serif;
+    margin-bottom: 0;
+}
+
+body {
+    background-image: linear-gradient(to right, #f44336, #e91e63, #9c27b0, #673ab7, #3f51b5, #2196f3, #03a9f4, #00bcd4, #009688, #4caf50, #8bc34a, #cddc39, #ffeb3b, #ffc107, #ff9800, #ff5722);
+    background-size: 1600% 1600%;
+    animation: gradient 200s ease infinite;
+    margin: 1rem;
 }
 
 .pagination {
-  margin-top: 20px;
-  display: flex;
-  justify-content: center;
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
 }
 
 .pagination .page-link {
     color: black;
-    font-family: 'Ubuntu', sans-serif;
 }
 
 .pagination .active .page-link {
@@ -28,96 +35,90 @@ img {
 }
 
 .main-btn {
-  display: inline-block;
-  font-weight: 500;
-  text-align: center;
-  white-space: nowrap;
-  vertical-align: middle;
-  user-select: none;
-  padding: 10px 25px;
-  font-size: 20px;
-  border-radius: 5px;
-  color: #fff;
-  cursor: pointer;
-  z-index: 5;
-  transition: all .4s ease-in-out;
-  border: none;
-  background: black;
-  overflow: hidden;
-  text-decoration: none;
+    display: inline-block;
+    font-weight: 500;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    user-select: none;
+    padding: 10px 25px;
+    font-size: 20px;
+    border-radius: 5px;
+    color: #fff;
+    cursor: pointer;
+    z-index: 5;
+    transition: all .4s ease-in-out;
+    border: none;
+    background: black;
+    overflow: hidden;
+    text-decoration: none;
 }
 
 .main-btn:hover {
-  color: #fff;
+    color: #fff;
 }
 
 .bg-gradient {
-  background: linear-gradient(to right, rgba(0, 123, 255, 0.5), rgba(255, 193, 7, 0.5)); /* Пример градиента */
-  backdrop-filter: blur(5px); /* Небольшое размытие фона */
-  padding: 10px 0; /* Отступы сверху и снизу */
+    background: linear-gradient(to right, rgba(0, 123, 255, 0.5), rgba(255, 193, 7, 0.5));
+    backdrop-filter: blur(5px);
+    padding: 10px 0;
 }
 
 .navbar-nav .nav-link {
-    font-family: 'Ubuntu', sans-serif;
-    color: black;
-}
-
-.navbar-dark .navbar-nav .nav-link {
     color: black;
 }
 
 .contact-icon {
-        width: 30px;
-        height: 30px;
-        margin-right: 10px;
-        transition: transform 0.3s ease;
-    }
-    .contact-icon:hover {
-        transform: translateY(-5px);
-    }
-    .contact-link:hover {
-        text-decoration: none;
-    }
-    .card-header h3 {
-        font-family: 'Ubuntu', sans-serif;
-        color: #333;
-        text-transform: uppercase;
-    }
-    .card-body {
-        font-size: 18px;
-        font-family: 'Ubuntu', sans-serif;
-    }
-    .social-icons img {
-        margin: 0 5px;
-    }
-    .social-icons {
-        margin-top: 20px;
-    }
-    .working-hours, .location {
-        margin-top: 20px;
-    }
+    width: 30px;
+    height: 30px;
+    margin-right: 10px;
+    transition: transform 0.3s ease;
+}
 
-body {
-    background-image: linear-gradient(to right, #f44336, #e91e63, #9c27b0, #673ab7, #3f51b5, #2196f3, #03a9f4, #00bcd4, #009688, #4caf50, #8bc34a, #cddc39, #ffeb3b, #ffc107, #ff9800, #ff5722);
-    background-size: 1600% 1600%;
-    animation: gradient 200s ease infinite;
-    margin: 1rem;
-    font-family: 'Ubuntu', sans-serif;
+.contact-icon:hover {
+    transform: translateY(-5px);
+}
+
+.contact-link:hover {
+    text-decoration: none;
+}
+
+.card-header h3 {
+    color: #333;
+    text-transform: uppercase;
+}
+
+.card-body {
+    font-size: 18px;
+}
+
+.social-icons img {
+    margin: 0 5px;
+}
+
+.social-icons {
+    margin-top: 20px;
+}
+
+.working-hours, .location {
+    margin-top: 20px;
 }
 
 .carousel-item img {
-    width: 100%;  /* Занимает всю доступную ширину */
-    height: auto; /* Высота автоматически подстраивается под ширину */
-    object-fit: cover; /* Сохранение пропорций изображения */
+    width: 100%;
+    height: auto;
+    object-fit: cover;
     margin-top: 10px;
     margin-bottom: 10px;
 }
+
 @media (min-width: 768px) {
     .carousel-item img {
-        width: 500px;  /* Фиксированная ширина для десктопов */
-        height: 500px; /* Фиксированная высота для десктопов */
+        width: 500px;
+        height: 500px;
     }
 }
+
 @keyframes gradient {
     0% {
         background-position: 0% 50%;
@@ -133,4 +134,3 @@ body {
 footer {
     font-family: 'Ubuntu', sans-serif;
 }
-
