@@ -14,10 +14,10 @@
 
       {% if user.is_authenticated and request.user == user %}
       <div class="d-flex justify-content-center mb-4">
-        <a class="btn btn-outline-dark btn-sm me-2 shadow-sm" href="{% url 'users:edit_profile' %}">
+        <a class="btn btn-outline-dark btn-m me-3 shadow-sm" href="{% url 'users:edit_profile' %}">
           <i class="bi bi-pencil"></i> Редактировать профиль
         </a>
-        <a class="btn btn-outline-dark btn-sm shadow-sm" href="{% url 'password_change' %}">
+        <a class="btn btn-outline-dark btn-m shadow-sm" href="{% url 'password_change' %}">
           <i class="bi bi-lock"></i> Изменить пароль
         </a>
       </div>
@@ -52,7 +52,7 @@
         {% else %}
         <div class="col-lg-8 text-center">
           <p class="text-dark">У вас пока нет отзыва</p>
-          <a class="btn btn-outline-dark btn-sm me-2" href="{% url 'reviews:add_review' %}">
+          <a class="btn btn-outline-dark btn-m me-2" href="{% url 'reviews:add_review' %}">
             <i class="bi bi-pencil"></i> Оставить отзыв
           </a>  
         </div>

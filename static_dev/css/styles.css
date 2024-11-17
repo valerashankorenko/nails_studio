@@ -8,30 +8,32 @@ body {
     background-image: linear-gradient(to right, #f44336, #e91e63, #9c27b0, #673ab7, #3f51b5, #2196f3, #03a9f4, #00bcd4, #009688, #4caf50, #8bc34a, #cddc39, #ffeb3b, #ffc107, #ff9800, #ff5722);
     background-size: 1600% 1600%;
     animation: gradient 200s ease infinite;
-    margin: 1rem;
-}
-
-.pagination {
-    margin-top: 20px;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    min-height: 100vh; /* Обеспечивает, что body занимает всю высоту экрана */
+    margin: 0; /* Убирает отступы по умолчанию */
 }
 
-.pagination .page-link {
-    color: black;
+main {
+    flex: 1; /* Позволяет основному контенту занимать все доступное пространство */
 }
 
-.pagination .active .page-link {
-    color: white;
-    background-color: black;
-}
-
-.pagination .disabled .page-link {
-    color: gray;
+footer {
+    width: 100%; /* Футер занимает всю ширину экрана */
+    background-color: #343a40; /* Цвет фона футера */
+    color: white; /* Цвет текста футера */
+    text-align: center; /* Выравнивание текста по центру */
+    padding: 1rem; /* Отступы вокруг текста */
+    margin-top: auto; /* Позволяет футеру оставаться внизу страницы */
 }
 
 img {
     margin-right: 10px;
+}
+
+.img-fluid {
+    border-radius: 24px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Настройте параметры тени по своему желанию */
 }
 
 .main-btn {
@@ -44,10 +46,10 @@ img {
     padding: 10px 25px;
     font-size: 20px;
     border-radius: 5px;
-    color: #fff;
+    color: white;
     cursor: pointer;
     z-index: 5;
-    transition: all .4s ease-in-out;
+    transition: transform 0.3s ease, background-color 0.3s ease; /* Плавный переход */
     border: none;
     background: black;
     overflow: hidden;
@@ -55,7 +57,9 @@ img {
 }
 
 .main-btn:hover {
-    color: #fff;
+    transform: scale(1.1); /* Увеличение кнопки */
+    background-color: black; /* Изменение цвета фона при наведении */
+    color: white;
 }
 
 .bg-gradient {
@@ -68,6 +72,41 @@ img {
     color: black;
 }
 
+/* Главная страница */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.fade-in {
+    animation: fadeIn 1s ease-in-out;
+}
+@keyframes shake {
+    0%, 100% {
+        transform: translateX(0);
+    }
+    25% {
+        transform: translateX(-5px);
+    }
+    50% {
+        transform: translateX(5px);
+    }
+    75% {
+        transform: translateX(-5px);
+    }
+}
+
+.shake {
+    animation: shake 2.0s ease-in-out infinite;
+}
+
+/* Страница контакты */
 .contact-icon {
     width: 30px;
     height: 30px;
@@ -83,10 +122,6 @@ img {
     text-decoration: none;
 }
 
-.card-header h3 {
-    color: #333;
-    text-transform: uppercase;
-}
 
 .card-body {
     font-size: 18px;
@@ -112,6 +147,8 @@ img {
     margin-bottom: 10px;
 }
 
+
+/* Страница мои работы */
 @media (min-width: 768px) {
     .carousel-item img {
         width: 500px;
@@ -131,6 +168,39 @@ img {
     }
 }
 
-footer {
-    font-family: 'Ubuntu', sans-serif;
+/* Пагинация */
+.pagination {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
 }
+
+.pagination .page-link {
+    color: black;
+    padding: 10px 15px; /* Измените отступы для кнопок */
+    font-size: 16px; /* Измените размер шрифта */
+    text-decoration: none; /* Уберите подчеркивание */
+}
+
+.pagination .active .page-link {
+    color: white;
+    background-color: gray;
+    border-color: black;
+}
+
+.pagination .disabled .page-link {
+    color: gray;
+}
+
+.pagination .page-link:hover {
+    color: black; /* Цвет текста при наведении */
+
+}
+
+@media (max-width: 768px) {
+    .pagination .page-link {
+        padding: 8px 10px; /* Уменьшите отступы для мобильных устройств */
+        font-size: 11px; /* Уменьшите размер шрифта для мобильных устройств */
+    }
+}
+
