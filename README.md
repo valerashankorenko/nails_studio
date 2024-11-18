@@ -75,6 +75,8 @@ python manage.py load_datainfo
 ```
 9. В корневой директории создать файл .env и заполнить своими данными:
 ```
+DJANGO_DEBUG=True
+ALLOWED_HOSTS=localhost,127.0.0.1
 SECRET_KEY=секретный ключ Django
 YANDEX_EMAIL_USER=почта Яндекс
 YANDEX_EMAIL_PASSWORD=пароль приложения почты Яндекс

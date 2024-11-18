@@ -76,17 +76,21 @@ img {
 @keyframes fadeIn {
     from {
         opacity: 0;
-        transform: translateY(-20px);
+        transform: translateY(-20px); /* Смещение вниз */
     }
     to {
         opacity: 1;
-        transform: translateY(0);
+        transform: translateY(0); /* Конечное состояние без смещения */
     }
 }
 
 .fade-in {
-    animation: fadeIn 1s ease-in-out;
+    animation: fadeIn 3s ease-in-out;
+    width: 100%;
 }
+
+
+/* Анимация тряски */
 @keyframes shake {
     0%, 100% {
         transform: translateX(0);
@@ -102,8 +106,52 @@ img {
     }
 }
 
-.shake {
-    animation: shake 2.0s ease-in-out infinite;
+.animate-custom-shake {
+    animation: shake 2s ease-in-out infinite;
+}
+
+@keyframes about {
+    from {
+        opacity: 0;
+        transform: translateY(20px); /* Смещение вниз */
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0); /* Конечное состояние без смещения */
+    }
+}
+
+.animate-custom-about {
+    animation: about 3s ease-in-out forwards; /* Сохраняет конечное состояние анимации */
+    opacity: 0; /* Начальное состояние */
+}
+
+/* Анимация появления главного фото */
+@keyframes slideOut {
+    from {
+        transform: translateX(100%);
+    }
+    to {
+        transform: translateX(0);
+    }
+}
+
+.animate-custom-main-foto {
+    animation: slideOut 3s ease-in-out;
+}
+
+/* Анимация слайдера */
+@keyframes slideIn {
+    from {
+        transform: translateX(-100%);
+    }
+    to {
+        transform: translateX(0);
+    }
+}
+
+.animate-custom-image {
+    animation: slideIn 3s ease-in-out;
 }
 
 /* Страница контакты */
@@ -151,7 +199,7 @@ img {
 /* Страница мои работы */
 @media (min-width: 768px) {
     .carousel-item img {
-        width: 500px;
+        width: 700px;
         height: 500px;
     }
 }
@@ -203,4 +251,20 @@ img {
         font-size: 11px; /* Уменьшите размер шрифта для мобильных устройств */
     }
 }
+/* Footer */
+@keyframes scale-animation {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.2); /* Увеличение текста на 20% */
+    }
+    100% {
+        transform: scale(1);
+    }
+}
 
+.animate-text {
+    display: inline-block; /* Позволяет применять трансформации */
+    animation: scale-animation 2s infinite; /* Запуск анимации */
+}
