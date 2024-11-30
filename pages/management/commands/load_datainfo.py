@@ -2,7 +2,7 @@ import json
 
 from django.core.management.base import BaseCommand
 
-from pages.models import Info, PriceList
+from pages.models import Info, PriceList, PriceList1
 
 
 class Command(BaseCommand):
@@ -24,5 +24,11 @@ class Command(BaseCommand):
             price_data = json.loads(data_file_price.read())
             for price in price_data:
                 PriceList.objects.get_or_create(**price)
+
+        with open('data/price1.json', encoding='utf-8',
+                  ) as data_file_price:
+            price_data = json.loads(data_file_price.read())
+            for price in price_data:
+                PriceList1.objects.get_or_create(**price)
 
         self.stdout.write(self.style.SUCCESS('Данные загружены'))

@@ -2,7 +2,7 @@ from django.shortcuts import render, get_object_or_404
 from django.views.generic import TemplateView, ListView, DetailView
 from http import HTTPStatus
 
-from pages.models import PriceList, Foto, Info
+from pages.models import PriceList,PriceList1, Foto, Info
 
 
 class IndexPage(TemplateView):
@@ -16,9 +16,21 @@ class PriceListView(ListView):
     """
     Представление для отображения прайс-листа.
     """
-    model = PriceList
     template_name = 'pages/price.html'
     context_object_name = 'price_list'
+
+    def get_context_data(self, **kwargs):
+        # Получаем контекст от родительского класса
+        context = super().get_context_data(**kwargs)
+
+        # Добавляем второй прайс-лист в контекст
+        context['price_list1'] = PriceList1.objects.all()
+
+        return context
+
+    def get_queryset(self):
+        # Возвращаем первый прайс-лист
+        return PriceList.objects.all()
 
 
 class FotoPage(TemplateView):

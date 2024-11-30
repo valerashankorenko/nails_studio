@@ -24,18 +24,39 @@ class Foto(models.Model):
 
 class PriceList(models.Model):
     """
-    Модель для прайс-листа.
+    Модель для прайс-листа маникюра.
     """
     service = models.CharField(
         'Название услуги',
         max_length=150, )
     price = models.CharField(
         'Стоимость услуги',
-        max_length=20, )
+        max_length=20)
 
     class Meta:
-        verbose_name = 'прайс-лист'
-        verbose_name_plural = 'Прайс-лист'
+        ordering = ('id',)
+        verbose_name = 'прайс-лист маникюр'
+        verbose_name_plural = 'Прайс-лист маникюр'
+
+    def __str__(self):
+        return f'{self.service} - {self.price}'
+
+
+class PriceList1(models.Model):
+    """
+    Модель для прайс-листа педикюра.
+    """
+    service = models.CharField(
+        'Название услуги',
+        max_length=150, )
+    price = models.CharField(
+        'Стоимость услуги',
+        max_length=20)
+
+    class Meta:
+        ordering = ('id',)
+        verbose_name = 'прайс-лист педикюр'
+        verbose_name_plural = 'Прайс-лист педикюр'
 
     def __str__(self):
         return f'{self.service} - {self.price}'

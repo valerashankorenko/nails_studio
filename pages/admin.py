@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Foto, PriceList, Info
+from .models import Foto, PriceList, PriceList1, Info
 
 
 @admin.register(Foto)
@@ -16,7 +16,7 @@ class FotoAdmin(admin.ModelAdmin):
     pub_date_format.short_description = 'Дата загрузки фотографии'
 
 
-@admin.register(PriceList)
+@admin.register(PriceList, PriceList1)
 class PriceListAdmin(admin.ModelAdmin):
     list_display = (
         'service', 'price')

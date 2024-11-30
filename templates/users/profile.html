@@ -7,7 +7,8 @@
 <div class="container">
   <div class="row">
     <div class="col-lg-8 offset-lg-2 col-md-10 offset-md-1">
-      <h3 class="mb-3 text-center">Личный кабинет: {{ user.get_full_name }}</h3>
+      <h3 class="mb-3 text-center">Личный кабинет:<br>
+          {{ user.get_full_name }}</h3>
       <div class="text-center mb-4">
         <p class="mb-1 text-dark">Регистрация: {{ user.date_joined|date:"d.m.Y в H:i" }}</p>
       </div>

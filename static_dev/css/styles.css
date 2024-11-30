@@ -89,27 +89,6 @@ img {
     width: 100%;
 }
 
-
-/* Анимация тряски */
-@keyframes shake {
-    0%, 100% {
-        transform: translateX(0);
-    }
-    25% {
-        transform: translateX(-5px);
-    }
-    50% {
-        transform: translateX(5px);
-    }
-    75% {
-        transform: translateX(-5px);
-    }
-}
-
-.animate-custom-shake {
-    animation: shake 2s ease-in-out infinite;
-}
-
 @keyframes about {
     from {
         opacity: 0;
@@ -154,25 +133,67 @@ img {
     animation: slideIn 3s ease-in-out;
 }
 
+/* Страница прайс-лист */
+.custom-table {
+    border-radius: 3px;
+    margin-bottom: 20px;
+    overflow: hidden;
+}
+
+.custom-table thead {
+    background-color: black; /* Цвет фона заголовка таблицы */
+    border: 1px solid black; /* Установка черной границы для заголовков ячеек */
+}
+
+.custom-table th {
+    padding: 15px;
+    text-align: center;
+    color: white; /* Цвет текста заголовка */
+}
+
+.custom-table td {
+    padding: 15px;
+    text-align: center;
+    color: black; /* Цвет текста ячеек */
+    border: 1px solid black; /* Установка черной границы для ячеек */
+}
+
+.custom-table tbody tr {
+    transition: background-color 0.3s ease; /* Плавный переход фона при наведении */
+    border: 1px solid black; /* Установка черной границы для заголовков ячеек */
+}
+
+.custom-table tbody tr:hover {
+    background-color: rgba(255, 215, 0, 0.2); /* Цвет фона при наведении на строку */
+}
+
+.card {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Тень для карточки */
+}
+
+.card-header {
+    background-color: white; /* Цвет фона заголовка карточки */
+    color: black; /* Цвет текста заголовка карточки */
+    border-radius: 10px 10px 0 0; /* Закругление верхних углов заголовка карточки */
+}
+
 /* Страница контакты */
 .contact-icon {
     width: 30px;
     height: 30px;
-    margin-right: 10px;
+    margin-right: 8px;
     transition: transform 0.3s ease;
 }
 
+.phone-icon {
+    margin-right: 0; /* Убираем отступ только для иконки телефона */
+}
 .contact-icon:hover {
     transform: translateY(-5px);
 }
 
 .contact-link:hover {
     text-decoration: none;
-}
-
-
-.card-body {
-    font-size: 18px;
 }
 
 .social-icons img {
@@ -250,21 +271,4 @@ img {
         padding: 8px 10px; /* Уменьшите отступы для мобильных устройств */
         font-size: 11px; /* Уменьшите размер шрифта для мобильных устройств */
     }
-}
-/* Footer */
-@keyframes scale-animation {
-    0% {
-        transform: scale(1);
-    }
-    50% {
-        transform: scale(1.2); /* Увеличение текста на 20% */
-    }
-    100% {
-        transform: scale(1);
-    }
-}
-
-.animate-text {
-    display: inline-block; /* Позволяет применять трансформации */
-    animation: scale-animation 2s infinite; /* Запуск анимации */
 }
