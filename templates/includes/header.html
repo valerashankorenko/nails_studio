@@ -31,27 +31,26 @@
             <a class="nav-link" href="{% url 'reviews:review' %}">Отзывы</a>
           </li>
         </ul>
+          {% if user.is_authenticated %}
+                <div class="btn-group" role="group" aria-label="Basic outlined example">
+                    <button type="button" class="btn btn-sm btn-outline-dark">
+                        <a class="text-decoration-none text-reset" href="{% url 'users:profile' user.username %}">Личный кабинет</a>
+                    </button>
+                    <button type="button" class="btn btn-sm btn-outline-dark">
+                        <a class="text-decoration-none text-reset" href="{% url 'logout' %}">Выйти</a>
+                    </button>
+                </div>
+            {% else %}
+                <div class="btn-group" role="group" aria-label="Basic outlined example">
+                    <button type="button" class="btn btn-sm btn-outline-dark">
+                        <a class="text-decoration-none text-reset" href="{% url 'login' %}">Войти</a>
+                    </button>
+                    <button type="button" class="btn btn-sm btn-outline-dark">
+                        <a class="text-decoration-none text-reset" href="{% url 'users:registration' %}">Регистрация</a>
+                    </button>
+                </div>
+            {% endif %}
       </div>
-
-      {% if user.is_authenticated %}
-        <div class="btn-group" role="group" aria-label="Basic outlined example">
-          <button type="button" class="btn btn-outline-dark">
-            <a class="text-decoration-none text-reset" href="{% url 'users:profile' user.username %}">Личный кабинет</a>
-          </button>
-          <button type="button" class="btn btn-outline-dark">
-            <a class="text-decoration-none text-reset" href="{% url 'logout' %}">Выйти</a>
-          </button>
-        </div>
-      {% else %}
-        <div class="btn-group" role="group" aria-label="Basic outlined example">
-          <button type="button" class="btn btn-outline-dark">
-            <a class="text-decoration-none text-reset" href="{% url 'login' %}">Войти</a>
-          </button>
-          <button type="button" class="btn btn-outline-dark">
-            <a class="text-decoration-none text-reset" href="{% url 'users:registration' %}">Регистрация</a>
-          </button>
-        </div>
-      {% endif %}
     </div>
   </nav>
 </header>
