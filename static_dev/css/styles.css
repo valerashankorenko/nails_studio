@@ -152,6 +152,8 @@ img {
     border-radius: 3px;
     margin-bottom: 20px;
     overflow: hidden;
+    width: 100%; /* Убедитесь, что таблица занимает 100% ширины */
+    table-layout: auto; /* Автоматическая ширина столбцов */
 }
 
 .custom-table thead {
@@ -170,11 +172,13 @@ img {
     text-align: center;
     color: black; /* Цвет текста ячеек */
     border: 1px solid black; /* Установка черной границы для ячеек */
+    word-wrap: break-word; /* Позволяет переносить длинные слова */
+    white-space: normal; /* Позволяет переносу строк */
 }
 
 .custom-table tbody tr {
     transition: background-color 0.3s ease; /* Плавный переход фона при наведении */
-    border: 1px solid black; /* Установка черной границы для заголовков ячеек */
+    border: 1px solid black; /* Установка черной границы для строк */
 }
 
 .custom-table tbody tr:hover {
@@ -191,6 +195,19 @@ img {
     border-radius: 10px 10px 0 0; /* Закругление верхних углов заголовка карточки */
 }
 
+/* Медиа-запросы для мобильных устройств */
+@media (max-width: 768px) {
+    .custom-table td {
+        font-size: 14px; /* Уменьшение размера шрифта */
+        padding: 8px;   /* Уменьшение отступов */
+    }
+
+    .custom-table th {
+        font-size: 16px; /* Уменьшение размера шрифта заголовка */
+    }
+}
+
+
 /* Страница контакты */
 .contact-icon {
     width: 30px;
@@ -205,7 +222,9 @@ img {
 .contact-icon:hover {
     transform: translateY(-5px);
 }
-
+.contact-link {
+    text-decoration: none; /* Убирает подчеркивание */
+}
 .contact-link:hover {
     text-decoration: none;
 }
