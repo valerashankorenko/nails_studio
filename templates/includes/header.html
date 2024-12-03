@@ -31,7 +31,8 @@
             <a class="nav-link" href="{% url 'reviews:review' %}">Отзывы</a>
           </li>
         </ul>
-          {% if user.is_authenticated %}
+      </div>
+        {% if user.is_authenticated %}
                 <div class="btn-group" role="group" aria-label="Basic outlined example">
                     <button type="button" class="btn btn-sm btn-outline-dark">
                         <a class="text-decoration-none text-reset" href="{% url 'users:profile' user.username %}">Личный кабинет</a>
@@ -50,7 +51,6 @@
                     </button>
                 </div>
             {% endif %}
-      </div>
     </div>
   </nav>
 </header>
