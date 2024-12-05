@@ -33,24 +33,26 @@
         </ul>
       </div>
         {% if user.is_authenticated %}
-                <div class="btn-group" role="group" aria-label="Basic outlined example">
-                    <button type="button" class="btn btn-sm btn-outline-dark">
-                        <a class="text-decoration-none text-reset" href="{% url 'users:profile' user.username %}">Личный кабинет</a>
-                    </button>
-                    <button type="button" class="btn btn-sm btn-outline-dark">
-                        <a class="text-decoration-none text-reset" href="{% url 'logout' %}">Выйти</a>
-                    </button>
-                </div>
-            {% else %}
-                <div class="btn-group" role="group" aria-label="Basic outlined example">
-                    <button type="button" class="btn btn-sm btn-outline-dark">
-                        <a class="text-decoration-none text-reset" href="{% url 'login' %}">Войти</a>
-                    </button>
-                    <button type="button" class="btn btn-sm btn-outline-dark">
-                        <a class="text-decoration-none text-reset" href="{% url 'users:registration' %}">Регистрация</a>
-                    </button>
-                </div>
-            {% endif %}
+            <div class="btn-group" role="group">
+                <button type="button" class="btn btn-dark dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                    Личный кабинет
+                </button>
+                <ul class="dropdown-menu bg-dark text-white">
+                    <li><a class="dropdown-item text-white" href="{% url 'users:profile' user.username %}">Профиль</a></li>
+                    <li><a class="dropdown-item text-white" href="{% url 'logout' %}">Выйти</a></li>
+                </ul>
+            </div>
+        {% else %}
+            <div class="btn-group" role="group">
+                <button type="button" class="btn btn-dark dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                    Вход/Регистрация
+                </button>
+                <ul class="dropdown-menu bg-dark text-white">
+                    <li><a class="dropdown-item text-white" href="{% url 'login' %}">Войти</a></li>
+                    <li><a class="dropdown-item text-white" href="{% url 'users:registration' %}">Регистрация</a></li>
+                </ul>
+            </div>
+        {% endif %}
     </div>
   </nav>
 </header>
