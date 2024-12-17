@@ -32,6 +32,11 @@ class PriceList(models.Model):
     price = models.CharField(
         'Стоимость услуги',
         max_length=20)
+    service_type = models.CharField(
+        'Тип услуги',
+        max_length=20,
+        default='manicure'
+    )
 
     class Meta:
         ordering = ('id',)
@@ -52,6 +57,11 @@ class PriceList1(models.Model):
     price = models.CharField(
         'Стоимость услуги',
         max_length=20)
+    service_type = models.CharField(
+        'Тип услуги',
+        max_length=20,
+        default='pedicure'
+    )
 
     class Meta:
         ordering = ('id',)

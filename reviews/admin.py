@@ -16,7 +16,7 @@ class ReviewAdmin(admin.ModelAdmin):
     get_author_name.short_description = 'Автор отзыва'
 
     def created_at_format(self, obj):
-        return obj.created_at.strftime('%d-%m-%Y %H:%M:%S')
+        return obj.created_at.strftime('%d-%m-%Y %H:%M')
 
     created_at_format.short_description = 'Дата и время отзыва'
 

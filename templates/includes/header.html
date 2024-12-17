@@ -34,20 +34,20 @@
       </div>
         {% if user.is_authenticated %}
             <div class="btn-group" role="group">
-                <button type="button" class="btn btn-dark dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                <button type="button" class="btn btn-dark dropdown-toggle custom-dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
                     Личный кабинет
                 </button>
-                <ul class="dropdown-menu bg-dark text-white">
+                <ul class="dropdown-menu bg-dark text-white custom-dropdown-menu">
                     <li><a class="dropdown-item text-white" href="{% url 'users:profile' user.username %}">Профиль</a></li>
                     <li><a class="dropdown-item text-white" href="{% url 'logout' %}">Выйти</a></li>
                 </ul>
             </div>
         {% else %}
             <div class="btn-group" role="group">
-                <button type="button" class="btn btn-dark dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                <button type="button" class="btn btn-dark dropdown-toggle custom-dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
                     Вход/Регистрация
                 </button>
-                <ul class="dropdown-menu bg-dark text-white">
+                <ul class="dropdown-menu bg-dark text-white custom-dropdown-menu">
                     <li><a class="dropdown-item text-white" href="{% url 'login' %}">Войти</a></li>
                     <li><a class="dropdown-item text-white" href="{% url 'users:registration' %}">Регистрация</a></li>
                 </ul>

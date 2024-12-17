@@ -25,25 +25,52 @@ main {
     flex: 1; /* Позволяет основному контенту занимать все доступное пространство */
 }
 /* Header */
-.dropdown-menu {
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.1);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+.navbar-nav .nav-link {
+    color: black;
+    transition: color 0.3s ease;
+}
+
+.navbar-nav .nav-link:hover {
+    color: white; /* Цвет при наведении */
+    animation: pulse 0.6s infinite; /* Анимация пульсации */
+}
+
+
+.btn.btn-dark.dropdown-toggle.custom-dropdown-toggle {
+    border-radius: 15px !important;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5); /* Добавление тени */
+    padding: 7px 15px !important;
+    transition: background-color 0.3s, box-shadow 0.3s !important;
     background-color: black;
-    color: #9e9e9e;
 }
 
-.dropdown-item {
-    color: white;
+.btn.btn-dark.dropdown-toggle.custom-dropdown-toggle:hover {
+    background-color: #495057 !important; /* Темнее оттенок серого */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3) !important;
 }
 
-/* Стили для выделения при наведении */
-.dropdown-item:hover {
-    background-color: #555; /* Серый фон при наведении */
-    color: white; /* Цвет текста при наведении */
+.custom-dropdown-menu {
+    border-radius: 15px;
 }
 
-/* Стили для нажатого элемента */
-.dropdown-item:active {
-    background-color: #777; /* Более темный серый фон при нажатии */
-    color: white; /* Цвет текста при нажатии */
+.custom-dropdown-menu .dropdown-item {
+    transition: background-color 0.3s;
+}
+
+.custom-dropdown-menu .dropdown-item:hover {
+    background-color: #495057; /* Еще темнее оттенок серого */
 }
 
 /* Footer */
@@ -112,9 +139,6 @@ img {
     padding: 10px 0;
 }
 
-.navbar-nav .nav-link {
-    color: black;
-}
 
 /* Главная страница */
 @keyframes fadeIn {
