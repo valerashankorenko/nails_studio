@@ -22,54 +22,40 @@ class Foto(models.Model):
         return f'Фотография работы №{self.id}'
 
 
-class PriceList(models.Model):
+class PriceListBase(models.Model):
+    """
+    Абстрактная модель для прайс-листа.
+    """
+    service = models.CharField(
+        'Название услуги',
+        max_length=150)
+    price = models.CharField(
+        'Стоимость услуги',
+        max_length=20)
+
+    class Meta:
+        abstract = True
+
+    def __str__(self):
+        return f'{self.service} - {self.price}'
+
+
+class PriceList(PriceListBase):
     """
     Модель для прайс-листа маникюра.
     """
-    service = models.CharField(
-        'Название услуги',
-        max_length=150, )
-    price = models.CharField(
-        'Стоимость услуги',
-        max_length=20)
-    service_type = models.CharField(
-        'Тип услуги',
-        max_length=20,
-        default='manicure'
-    )
-
-    class Meta:
-        ordering = ('id',)
+    class Meta(PriceListBase.Meta):
         verbose_name = 'прайс-лист маникюр'
         verbose_name_plural = 'Прайс-лист маникюр'
 
-    def __str__(self):
-        return f'{self.service} - {self.price}'
 
-
-class PriceList1(models.Model):
+class PriceList1(PriceListBase):
     """
     Модель для прайс-листа педикюра.
     """
-    service = models.CharField(
-        'Название услуги',
-        max_length=150, )
-    price = models.CharField(
-        'Стоимость услуги',
-        max_length=20)
-    service_type = models.CharField(
-        'Тип услуги',
-        max_length=20,
-        default='pedicure'
-    )
-
-    class Meta:
-        ordering = ('id',)
+    class Meta(PriceListBase.Meta):
         verbose_name = 'прайс-лист педикюр'
         verbose_name_plural = 'Прайс-лист педикюр'
-
-    def __str__(self):
-        return f'{self.service} - {self.price}'
 
 
 class Info(models.Model):

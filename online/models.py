@@ -8,13 +8,17 @@ User = get_user_model()
 
 
 class OnlineRec(models.Model):
+    """
+    Модель для онлайн-записи
+    """
     user = models.ForeignKey(
-        User, on_delete=models.CASCADE,
+        User,
+        on_delete=models.CASCADE,
         verbose_name='Клиент'
     )
     created_at = models.DateTimeField(
         'Дата создания записи',
-        auto_now=True,
+        auto_now_add=True  # Устанавливаем дату создания
     )
     appointment_date = models.DateField(
         'Дата проведения услуги',
@@ -22,30 +26,42 @@ class OnlineRec(models.Model):
     )
     appointment_time = models.TimeField(
         'Время проведения услуги',
-        default=timezone.now
+        default=None,
+        blank=True,
+        null=True
+    )
+    service_status = models.CharField(
+        'Статус услуги',
+        max_length=20,
+        choices=[
+            ('created', 'Создана'),
+            ('confirmed', 'Подтверждена'),
+            ('postponed', 'Перенесена'),
+            ('cancelled', 'Отменена')
+        ],
+        default='created'
     )
     service_type = models.CharField(
         'Тип услуги',
         max_length=20,
         choices=[
             ('manicure', 'Маникюр'),
-            ('pedicure', 'Педикюр')
+            ('pedicure', 'Педикюр'),
+            ('manicure&pedicure', 'Маникюр и педикюр'),
         ],
         default='manicure'
     )
-    manicure_services = models.ManyToManyField(
+    service_manicure = models.ManyToManyField(
         PriceList,
+        blank=True,
         verbose_name='Услуги маникюра',
-        limit_choices_to={'service_type': 'manicure'},
-        blank=True,
-        related_name='online_records'
+        related_name='online_recs'
     )
-    pedicure_services = models.ManyToManyField(
+    service_pedicure = models.ManyToManyField(
         PriceList1,
-        verbose_name='Услуги педикюра',
-        limit_choices_to={'service_type': 'pedicure'},
         blank=True,
-        related_name='online_records'
+        verbose_name='Услуги педикюра',
+        related_name='online_recs_pedicure'
     )
 
     class Meta:
