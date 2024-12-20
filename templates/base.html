@@ -2,7 +2,7 @@
 {% load django_bootstrap5 %}
 <!DOCTYPE html>
 <html lang="ru">
-  <head>
+<head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -13,17 +13,20 @@
     <link rel="apple-touch-icon" sizes="180x180" href="{% static 'img/fav/apple-touch-icon.png' %}">
     <link rel="icon" type="image/png" sizes="32x32" href="{% static 'img/fav/favicon-32x32.png' %}">
     <link rel="icon" type="image/png" sizes="16x16" href="{% static 'img/fav/favicon-16x16.png' %}">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/i18n/datepicker-ru.js"></script>
     <title>
       {% block title %}{% endblock %}
     </title>
     {% bootstrap_css %}
-  </head>
-  <body>
+</head>
+<body>
     {% include "includes/header.html" %}
     <main>
-      <div class="container py-5">
-        {% block content %}{% endblock %}
-      </div>
+        <div class="container py-5">
+            {% block content %}{% endblock %}
+        </div>
     </main>
     {% include "includes/footer.html" %}
     <script>
@@ -31,7 +34,14 @@
             $('.navbar-toggler').on('click', function(){
                 $('#navbarSupportedContent').toggleClass('show');
             });
+
+            // Инициализация datepicker с русской локализацией
+            $.datepicker.setDefaults($.datepicker.regional['ru']);
+            $('.datepicker').datepicker({
+                dateFormat: 'yy-mm-dd', // Формат даты
+                autoclose: true
+            });
         });
     </script>
-  </body>
+</body>
 </html>

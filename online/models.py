@@ -1,7 +1,8 @@
 from django.db import models
 from django.contrib.auth import get_user_model
-from django.utils import timezone
+from datetime import date
 
+from online.validators import validate_appointment_time
 from pages.models import PriceList, PriceList1
 
 User = get_user_model()
@@ -18,17 +19,18 @@ class OnlineRec(models.Model):
     )
     created_at = models.DateTimeField(
         'Дата создания записи',
-        auto_now_add=True  # Устанавливаем дату создания
+        auto_now_add=True
     )
     appointment_date = models.DateField(
         'Дата проведения услуги',
-        default=timezone.now
+        default=date.today
     )
     appointment_time = models.TimeField(
         'Время проведения услуги',
         default=None,
         blank=True,
-        null=True
+        null=True,
+        validators=[validate_appointment_time],
     )
     service_status = models.CharField(
         'Статус услуги',
@@ -37,7 +39,8 @@ class OnlineRec(models.Model):
             ('created', 'Создана'),
             ('confirmed', 'Подтверждена'),
             ('postponed', 'Перенесена'),
-            ('cancelled', 'Отменена')
+            ('cancelled', 'Отменена'),
+            ('completed', 'Выполнена'),
         ],
         default='created'
     )
@@ -49,7 +52,6 @@ class OnlineRec(models.Model):
             ('pedicure', 'Педикюр'),
             ('manicure&pedicure', 'Маникюр и педикюр'),
         ],
-        default='manicure'
     )
     service_manicure = models.ManyToManyField(
         PriceList,
