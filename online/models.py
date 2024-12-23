@@ -1,9 +1,10 @@
 from django.db import models
 from django.contrib.auth import get_user_model
-from datetime import date
-
-from online.validators import validate_appointment_time
+from django.utils import timezone
+from django.core.exceptions import ValidationError
+from online.validators import validate_appointment_date
 from pages.models import PriceList, PriceList1
+from datetime import time
 
 User = get_user_model()
 
@@ -23,14 +24,14 @@ class OnlineRec(models.Model):
     )
     appointment_date = models.DateField(
         'Дата проведения услуги',
-        default=date.today
+        default=timezone.now,
+        validators=[validate_appointment_date],
     )
     appointment_time = models.TimeField(
         'Время проведения услуги',
         default=None,
         blank=True,
-        null=True,
-        validators=[validate_appointment_time],
+        null=True
     )
     service_status = models.CharField(
         'Статус услуги',
@@ -74,3 +75,25 @@ class OnlineRec(models.Model):
     def __str__(self):
         return (f'Запись от {self.user} на {self.get_service_type_display()}'
                 f' {self.appointment_date} в {self.appointment_time}')
+
+    def clean(self):
+        super().clean()
+        if self.appointment_time:
+            if self.appointment_time < time(
+                    8, 0) or self.appointment_time > time(20, 0):
+                raise ValidationError(
+                    'Время должно быть в диапазоне с 8:00 до 20:00.')
+
+        # Проверка на наличие записи с той же датой и временем
+        if self.appointment_date and self.appointment_time:
+            existing_records = OnlineRec.objects.filter(
+                appointment_date=self.appointment_date,
+                appointment_time=self.appointment_time
+            )
+            if self.pk:
+                existing_records = existing_records.exclude(pk=self.pk)
+
+            if existing_records.exists():
+                raise ValidationError(
+                    f'На {self.appointment_date} в {self.appointment_time} '
+                    f'уже есть запись. Пожалуйста, выберите другое время.')

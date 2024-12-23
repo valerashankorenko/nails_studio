@@ -36,12 +36,11 @@ class OnlineRecAdmin(admin.ModelAdmin):
 
     @admin.display(description='Номер телефона')
     def phone_number(self, obj):
-        return obj.user.phone_number
+        return getattr(obj.user, 'phone_number', 'Нет номера')
 
     @admin.display(description='Дата и время проведения услуги')
     def appointment_datetime_format(self, obj):
-        return (f"{obj.appointment_date.strftime('%d-%m-%Y')} "
-                f"{obj.appointment_time.strftime('%H:%M')}")
+        return f'{obj.appointment_date:%d-%m-%Y} {obj.appointment_time:%H:%M}'
 
     @admin.display(description='Кол-во услуг маникюра')
     def service_manicure_count(self, obj):
@@ -50,4 +49,3 @@ class OnlineRecAdmin(admin.ModelAdmin):
     @admin.display(description='Кол-во услуг педикюра')
     def service_pedicure_count(self, obj):
         return obj.service_pedicure.count()
-
