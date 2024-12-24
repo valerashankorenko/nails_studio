@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .forms import OnlineRecForm
+from .forms import OnlineRecForm, get_available_time_slots
 from .models import OnlineRec
 
 

@@ -5,6 +5,14 @@
 {% endblock %}
 {% block content %}
 {% if user.is_authenticated %}
+  {% if messages %}
+    <div class="alert alert-success" role="alert">
+      {% for message in messages %}
+        {{ message }}
+      {% endfor %}
+    </div>
+  {% endif %}
+  
   <div class="col d-flex justify-content-center">
     <div class="card" style="width: 25rem; background-color: rgba(255, 255, 255, 0.5); border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);">
       <div class="card-header text-center mt-2">
@@ -35,24 +43,27 @@
           </div>
           <div class="mb-3">
             <label class="form-label" for="id_appointment_date">Дата проведения услуги</label>
-            <input type="text" name="appointment_date" class="form-control datepicker" id="id_appointment_date" placeholder="Введите дату (дд-мм-гггг)" />
-            {{ form.appointment_date.errors }}
+            {{ form.appointment_date }}
+            {% if form.appointment_date.errors %}
+                <div class="text-danger">
+                    {{ form.appointment_date.errors }}
+                </div>
+            {% endif %}
           </div>
           <div class="mb-3">
-    <label class="form-label" for="id_appointment_time">Время проведения услуги</label>
-    <select class="form-control" name="appointment_time" id="id_appointment_time" placeholder="Выберите время" required>
-        <option value="" disabled selected >Выберите время</option>
-        {% for hour in time_slots %}
-            <option value="{{ hour }}">{{ hour }}</option>
-        {% endfor %}
-    </select>
-    {% if form.appointment_time.errors %}
-        <div class="text-danger">
-            {{ form.appointment_time.errors }}
-        </div>
-    {% endif %}
-</div>
-
+            <label class="form-label" for="id_appointment_time">Время проведения услуги</label>
+            <select class="form-control" name="appointment_time" id="id_appointment_time" required>
+                <option value="" disabled selected>Выберите время</option>
+                {% for hour in time_slots %}
+                    <option value="{{ hour }}">{{ hour }}</option>
+                {% endfor %}
+            </select>
+            {% if form.appointment_time.errors %}
+                <div class="text-danger">
+                    {{ form.appointment_time.errors }}
+                </div>
+            {% endif %}
+          </div>
           <button type="submit" class="btn btn-dark">Записаться</button>
         </form>
       </div>
@@ -66,7 +77,6 @@
         document.getElementById('manicure-services').style.display = (value === 'manicure' || value === 'manicure&pedicure') ? 'block' : 'none';
         document.getElementById('pedicure-services').style.display = (value === 'pedicure' || value === 'manicure&pedicure') ? 'block' : 'none';
       });
-
   </script>
 {% else %}
   <div class="alert alert-warning text-center" role="alert">
