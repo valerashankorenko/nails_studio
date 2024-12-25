@@ -5,29 +5,28 @@
 {% endblock %}
 {% block content %}
 {% if user.is_authenticated %}
-  {% if messages %}
-    <div class="alert alert-success" role="alert">
-      {% for message in messages %}
-        {{ message }}
-      {% endfor %}
-    </div>
-  {% endif %}
-  
   <div class="col d-flex justify-content-center">
     <div class="card" style="width: 25rem; background-color: rgba(255, 255, 255, 0.5); border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);">
       <div class="card-header text-center mt-2">
         <h4>Онлайн-запись</h4>
       </div>
       <div class="card-body text-center">
-        <form method="post" action="{% url 'online:add_online_rec' %}" id="online-rec-form">
+        <form method="post" action="{% url 'online:add_online_rec' %}">
           {% csrf_token %}
           {% if form.errors %}
             <div class="alert alert-danger" role="alert">
               {{ form.non_field_errors }}
             </div>
           {% endif %}
+          {% if messages %}
+            <div class="alert alert-info" role="alert">
+              {% for message in messages %}
+                {{ message }}
+              {% endfor %}
+            </div>
+          {% endif %}
           <div class="mb-3">
-            <label class="form-label">Тип услуги</label>
+            <label class="form-label">Тип услуги:</label>
             {{ form.service_type }}
             {{ form.service_type.errors }}
           </div>
@@ -42,28 +41,14 @@
             {{ form.service_pedicure.errors }}
           </div>
           <div class="mb-3">
-            <label class="form-label" for="id_appointment_date">Дата проведения услуги</label>
+            <label class="form-label" for="id_appointment_date">Дата проведения услуги:</label>
             {{ form.appointment_date }}
-            {% if form.appointment_date.errors %}
-                <div class="text-danger">
-                    {{ form.appointment_date.errors }}
-                </div>
-            {% endif %}
           </div>
           <div class="mb-3">
-            <label class="form-label" for="id_appointment_time">Время проведения услуги</label>
-            <select class="form-control" name="appointment_time" id="id_appointment_time" required>
-                <option value="" disabled selected>Выберите время</option>
-                {% for hour in time_slots %}
-                    <option value="{{ hour }}">{{ hour }}</option>
-                {% endfor %}
-            </select>
-            {% if form.appointment_time.errors %}
-                <div class="text-danger">
-                    {{ form.appointment_time.errors }}
-                </div>
-            {% endif %}
+            <label class="form-label" for="id_appointment_time">Время проведения услуги:</label>
+            {{ form.appointment_time }}
           </div>
+          <input type="hidden" name="next" value="{{ next }}">
           <button type="submit" class="btn btn-dark">Записаться</button>
         </form>
       </div>
@@ -78,9 +63,5 @@
         document.getElementById('pedicure-services').style.display = (value === 'pedicure' || value === 'manicure&pedicure') ? 'block' : 'none';
       });
   </script>
-{% else %}
-  <div class="alert alert-warning text-center" role="alert">
-    Пожалуйста, войдите в систему, чтобы создать онлайн-запись.
-  </div>
 {% endif %}
 {% endblock %}

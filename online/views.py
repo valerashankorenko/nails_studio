@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, UpdateView, DeleteView
@@ -11,21 +12,12 @@ class OnlineRecCreateView(LoginRequiredMixin, CreateView):
     model = OnlineRec
     form_class = OnlineRecForm
     template_name = 'online_rec/online_rec_add.html'
+    success_url = reverse_lazy('online:add_online_rec')
 
     def form_valid(self, form):
         form.instance.user = self.request.user
-
-        # Проверка на максимальное количество услуг
-        if OnlineRec.objects.filter(user=self.request.user).count() >= 3:
-            form.add_error(None, 'Вы можете записаться только на 3 услуги.')
-            return self.form_invalid(form)
-
+        messages.success(self.request, 'Запись успешно создана!')
         return super().form_valid(form)
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['time_slots'] = [f'{hour:02}:00' for hour in range(8, 20)]
-        return context
 
 
 class OnlineRecUpdateView(LoginRequiredMixin, UpdateView):
@@ -33,18 +25,12 @@ class OnlineRecUpdateView(LoginRequiredMixin, UpdateView):
     model = OnlineRec
     form_class = OnlineRecForm
     template_name = 'online_rec/online_rec_update.html'
+    success_url = reverse_lazy('online:update_online_rec')
 
     def form_valid(self, form):
-        if OnlineRec.objects.filter(
-                user=self.request.user
-        ).exclude(pk=self.object.pk).count() >= 3:
-            form.add_error(None, 'Вы можете записаться только на 3 услуги.')
-            return self.form_invalid(form)
-
+        form.instance.user = self.get_object().user
+        messages.success(self.request, 'Запись успешно изменена!')
         return super().form_valid(form)
-
-    def get_success_url(self):
-        return reverse_lazy('pages:index')
 
 
 class OnlineRecDeleteView(LoginRequiredMixin, DeleteView):

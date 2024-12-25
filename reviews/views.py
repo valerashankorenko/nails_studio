@@ -41,9 +41,7 @@ class ReviewCreateView(LoginRequiredMixin, CreateView):
     model = Review
     form_class = ReviewForm
     template_name = 'reviews/review_add.html'
-
-    def get_success_url(self):
-        return reverse_lazy('pages:index')
+    success_url = reverse_lazy('pages:index')
 
     def form_valid(self, form):
         form.instance.author = self.request.user
@@ -60,15 +58,13 @@ class UpdateReviewView(LoginRequiredMixin, UpdateView):
     model = Review
     fields = ['text']
     template_name = 'reviews/review_update.html'
+    success_url = reverse_lazy('pages:index')
 
     def form_valid(self, form):
         review = form.save(commit=False)
         review.is_published = False
         review.save()
         return super().form_valid(form)
-
-    def get_success_url(self):
-        return reverse_lazy('pages:index')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

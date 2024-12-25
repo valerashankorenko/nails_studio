@@ -1,8 +1,67 @@
 {% extends "base.html" %}
 {% load django_bootstrap5 %}
 {% block title %}
-Редактирование записи
+Редактирование онлайн-записи
 {% endblock %}
 {% block content %}
+{% if user.is_authenticated %}
+  <div class="col d-flex justify-content-center">
+    <div class="card" style="width: 25rem; background-color: rgba(255, 255, 255, 0.5); border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);">
+      <div class="card-header text-center mt-2">
+        <h4>Редактирование онлайн-записи</h4>
+      </div>
+      <div class="card-body text-center">
+        <form method="post" action="{% url 'online:add_online_rec' %}">
+          {% csrf_token %}
+          {% if form.errors %}
+            <div class="alert alert-danger" role="alert">
+              {{ form.non_field_errors }}
+            </div>
+          {% endif %}
+          {% if messages %}
+            <div class="alert alert-info" role="alert">
+              {% for message in messages %}
+                {{ message }}
+              {% endfor %}
+            </div>
+          {% endif %}
+          <div class="mb-3">
+            <label class="form-label">Тип услуги:</label>
+            {{ form.service_type }}
+            {{ form.service_type.errors }}
+          </div>
+          <div class="mb-3" id="manicure-services" style="display:none;">
+            <label class="form-label">Услуги маникюра</label>
+            {{ form.service_manicure }}
+            {{ form.service_manicure.errors }}
+          </div>
+          <div class="mb-3" id="pedicure-services" style="display:none;">
+            <label class="form-label">Услуги педикюра</label>
+            {{ form.service_pedicure }}
+            {{ form.service_pedicure.errors }}
+          </div>
+          <div class="mb-3">
+            <label class="form-label" for="id_appointment_date">Дата проведения услуги:</label>
+            {{ form.appointment_date }}
+          </div>
+          <div class="mb-3">
+            <label class="form-label" for="id_appointment_time">Время проведения услуги:</label>
+            {{ form.appointment_time }}
+          </div>
+          <input type="hidden" name="next" value="{{ next }}">
+          <button type="submit" class="btn btn-dark">Записаться</button>
+        </form>
+      </div>
+    </div>
+  </div>
 
+  <script>
+      // Показать услуги в зависимости от типа услуги
+      document.getElementById('id_service_type').addEventListener('change', function() {
+        const value = this.value;
+        document.getElementById('manicure-services').style.display = (value === 'manicure' || value === 'manicure&pedicure') ? 'block' : 'none';
+        document.getElementById('pedicure-services').style.display = (value === 'pedicure' || value === 'manicure&pedicure') ? 'block' : 'none';
+      });
+  </script>
+{% endif %}
 {% endblock %}

@@ -4,7 +4,7 @@ from django.utils import timezone
 from django.core.exceptions import ValidationError
 from online.validators import validate_appointment_date
 from pages.models import PriceList, PriceList1
-from datetime import time
+
 
 User = get_user_model()
 
@@ -78,12 +78,6 @@ class OnlineRec(models.Model):
 
     def clean(self):
         super().clean()
-        if self.appointment_time:
-            if self.appointment_time < time(
-                    8, 0) or self.appointment_time > time(20, 0):
-                raise ValidationError(
-                    'Время должно быть в диапазоне с 8:00 до 20:00.')
-
         # Проверка на наличие записи с той же датой и временем
         if self.appointment_date and self.appointment_time:
             existing_records = OnlineRec.objects.filter(
@@ -94,6 +88,9 @@ class OnlineRec(models.Model):
                 existing_records = existing_records.exclude(pk=self.pk)
 
             if existing_records.exists():
+                formatted_date = self.appointment_date.strftime('%d.%m.%Y')
+                formatted_time = self.appointment_time.strftime('%H:%M')
                 raise ValidationError(
-                    f'На {self.appointment_date} в {self.appointment_time} '
-                    f'уже есть запись. Пожалуйста, выберите другое время.')
+                    f'На {formatted_date} в {formatted_time} '
+                    f'уже есть запись. Пожалуйста, выберите другое время.'
+                )

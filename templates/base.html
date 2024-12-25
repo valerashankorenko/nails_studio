@@ -15,9 +15,6 @@
     <link rel="icon" type="image/png" sizes="16x16" href="{% static 'img/fav/favicon-16x16.png' %}">
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-    <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/ru.js"></script>
     <title>
       {% block title %}{% endblock %}
     </title>
@@ -35,15 +32,6 @@
         $(document).ready(function(){
             $('.navbar-toggler').on('click', function(){
                 $('#navbarSupportedContent').toggleClass('show');
-            });
-
-            // Инициализация datepicker с русской локализацией
-            flatpickr('.datepicker', {
-                dateFormat: 'd-m-Y',
-                locale: 'ru',
-                onClose: function(selectedDates, dateStr, instance) {
-                    // Закрытие календаря
-                }
             });
         });
     </script>

@@ -1,11 +1,11 @@
 from django.contrib import admin
-from .forms import OnlineRecForm, get_available_time_slots
+from .forms import OnlineRecAdminForm
 from .models import OnlineRec
 
 
 @admin.register(OnlineRec)
 class OnlineRecAdmin(admin.ModelAdmin):
-    form = OnlineRecForm
+    form = OnlineRecAdminForm
     list_display = (
         'get_user_name',
         'phone_number',
@@ -40,7 +40,7 @@ class OnlineRecAdmin(admin.ModelAdmin):
 
     @admin.display(description='Дата и время проведения услуги')
     def appointment_datetime_format(self, obj):
-        return f'{obj.appointment_date:%d-%m-%Y} {obj.appointment_time:%H:%M}'
+        return f'{obj.appointment_date:%d.%m.%Y} {obj.appointment_time:%H:%M}'
 
     @admin.display(description='Кол-во услуг маникюра')
     def service_manicure_count(self, obj):
