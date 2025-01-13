@@ -19,9 +19,10 @@ class FotoAdmin(admin.ModelAdmin):
 @admin.register(PriceList, PriceList1)
 class PriceListAdmin(admin.ModelAdmin):
     list_display = (
-        'service', 'price')
+        'id', 'service', 'price')
     list_display_links = ('service', 'price')
     search_fields = ('service', 'price')
+    ordering = ('id',)
     empty_value_display = '-пусто-'
 
 
@@ -31,3 +32,4 @@ class InfoAdmin(admin.ModelAdmin):
         'title', 'text')
     list_display_links = ('title', 'text')
     search_fields = ('title', 'text')
+

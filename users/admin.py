@@ -14,6 +14,7 @@ class UserAdmin(admin.ModelAdmin):
     )
     list_display_links = ('email', 'date_joined_format')
     search_fields = ('email', 'first_name', 'last_name')
+    ordering = ('id', 'is_active',)
     empty_value_display = '-пусто-'
 
     def date_joined_format(self, obj):

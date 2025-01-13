@@ -5,10 +5,11 @@ from .models import Review
 @admin.register(Review)
 class ReviewAdmin(admin.ModelAdmin):
     list_display = (
-        'get_author_name', 'text', 'created_at_format', 'is_published'
+        'id', 'get_author_name', 'text', 'created_at_format', 'is_published'
     )
     list_display_links = ('created_at_format', 'get_author_name',)
     search_fields = ('text', 'author__email',)
+    ordering = ('id', 'is_published',)
     empty_value_display = '-пусто-'
 
     def get_author_name(self, obj):

@@ -24,6 +24,9 @@ class OnlineRecAdmin(admin.ModelAdmin):
         'user__last_name',
         'user__phone_number'
     )
+    ordering = (
+        'service_status',
+    )
     filter_horizontal = (
         'service_manicure',
         'service_pedicure'
