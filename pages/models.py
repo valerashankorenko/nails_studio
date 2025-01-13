@@ -28,10 +28,13 @@ class PriceListBase(models.Model):
     """
     service = models.CharField(
         'Название услуги',
-        max_length=150)
+        max_length=150,
+        unique=True,
+    )
     price = models.CharField(
         'Стоимость услуги',
-        max_length=20)
+        max_length=20
+    )
 
     class Meta:
         abstract = True
