@@ -32,16 +32,24 @@
           </div>
           <div class="mb-3" id="manicure-services" style="display:none;">
             <label class="form-label">Услуги маникюра</label>
-            {{ form.service_manicure }}
+            {% for checkbox in form.service_manicure %}
+                <div class="form-check">
+                    {{ checkbox.tag }} {{ checkbox.choice_label }}
+                </div>
+            {% endfor %}
             {{ form.service_manicure.errors }}
           </div>
           <div class="mb-3" id="pedicure-services" style="display:none;">
             <label class="form-label">Услуги педикюра</label>
-            {{ form.service_pedicure }}
+            {% for checkbox in form.service_pedicure %}
+                <div class="form-check">
+                    {{ checkbox.tag }} {{ checkbox.choice_label }}
+                </div>
+            {% endfor %}
             {{ form.service_pedicure.errors }}
           </div>
           <div class="mb-3">
-            <label class="form-label" for="id_appointment_date">Дата проведения услуги:</label>
+            <label class="form-label " for="id_appointment_date">Дата проведения услуги:</label>
             {{ form.appointment_date }}
           </div>
           <div class="mb-3">

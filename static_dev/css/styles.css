@@ -24,6 +24,7 @@ body {
 main {
     flex: 1; /* Позволяет основному контенту занимать все доступное пространство */
 }
+
 /* Header */
 @keyframes pulse {
     0% {
@@ -73,37 +74,7 @@ main {
     background-color: #495057; /* Еще темнее оттенок серого */
 }
 
-/* Footer */
-footer {
-    width: 100%; /* Футер занимает всю ширину экрана */
-    background-color: rgb(0, 0, 0, 0.5); /* Цвет фона футера */
-    color: white; /* Цвет текста футера */
-    text-align: center; /* Выравнивание текста по центру */
-    padding: 1rem; /* Отступы вокруг текста */
-    margin-top: auto; /* Позволяет футеру оставаться внизу страницы */
-}
 
-.neon-text {
-  color: #fff;
-  text-shadow:
-    0 0 7px #fff,
-    0 0 10px #fff,
-    0 0 21px #fff,
-    0 0 42px #0fa,
-    0 0 82px #0fa,
-    0 0 92px #0fa,
-    0 0 102px #0fa,
-    0 0 151px #0fa;
-}
-
-img {
-    margin-right: 10px;
-}
-
-.img-fluid {
-    border-radius: 24px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Настройте параметры тени по своему желанию */
-}
 /* Кнопки */
 .main-btn {
     display: inline-block;
@@ -261,6 +232,50 @@ img {
     }
 }
 
+/* Онлайн-запись */
+.alert {
+    border-radius: 15px;
+}
+
+input[type="date"],
+input[type="time"],
+select {
+    border-radius: 15px;
+    border: 1px solid #ced4da;
+    padding: 10px;
+    transition: border-color 0.3s;
+}
+
+
+input[type="date"]:focus,
+input[type="time"]:focus,
+select:focus {
+    color: black;               /* Цвет текста при фокусе */
+    background-color: #e0e0e0;  /* Цвет фона при фокусе */
+    border-color: black !important;  /* Цвет рамки при фокусе */
+    outline: none !important;        /* Убираем стандартное обрамление */
+    box-shadow: 0 0 0 0.2rem rgba(0,0,0,0.5) !important; /* Чёрная подсветка */
+}
+
+#manicure-services,
+#pedicure-services {
+    border: 1px solid #ced4da;
+    border-radius: 15px;
+    padding: 5px;
+    background-color: rgb(0, 0, 0, 0.1);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+
+input[type="checkbox"]:checked,
+input[type="radio"]:checked {
+  background-color: black;
+}
+
+.form-check {
+    text-align: left;
+
+}
 
 /* Страница контакты */
 .contact-icon {
@@ -303,7 +318,6 @@ img {
     margin-bottom: 10px;
 }
 
-
 /* Страница мои работы */
 @media (min-width: 768px) {
     .carousel-item img {
@@ -322,6 +336,38 @@ img {
     100% {
         background-position: 0% 50%;
     }
+}
+
+/* Footer */
+footer {
+    width: 100%; /* Футер занимает всю ширину экрана */
+    background-color: rgb(0, 0, 0, 0.5); /* Цвет фона футера */
+    color: white; /* Цвет текста футера */
+    text-align: center; /* Выравнивание текста по центру */
+    padding: 1rem; /* Отступы вокруг текста */
+    margin-top: auto; /* Позволяет футеру оставаться внизу страницы */
+}
+
+.neon-text {
+  color: #fff;
+  text-shadow:
+    0 0 7px #fff,
+    0 0 10px #fff,
+    0 0 21px #fff,
+    0 0 42px #0fa,
+    0 0 82px #0fa,
+    0 0 92px #0fa,
+    0 0 102px #0fa,
+    0 0 151px #0fa;
+}
+
+img {
+    margin-right: 10px;
+}
+
+.img-fluid {
+    border-radius: 24px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Настройте параметры тени по своему желанию */
 }
 
 /* Пагинация */
