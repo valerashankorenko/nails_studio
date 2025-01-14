@@ -1,4 +1,6 @@
 import locale
+
+from django.shortcuts import get_object_or_404
 from django.utils import timezone
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.paginator import Paginator
@@ -60,6 +62,12 @@ class UpdateReviewView(LoginRequiredMixin, UpdateView):
     template_name = 'reviews/review_update.html'
     success_url = reverse_lazy('pages:index')
 
+    def get_object(self, queryset=None):
+        obj = get_object_or_404(
+            Review, pk=self.kwargs['pk'], author=self.request.user
+        )
+        return obj
+
     def form_valid(self, form):
         review = form.save(commit=False)
         review.is_published = False
@@ -77,6 +85,12 @@ class DeleteReviewView(LoginRequiredMixin, DeleteView):
     model = Review
     template_name = 'reviews/review_confirm_delete.html'
     success_url = reverse_lazy('reviews:review')
+
+    def get_object(self, queryset=None):
+        obj = get_object_or_404(
+            Review, pk=self.kwargs['pk'], author=self.request.user
+        )
+        return obj
 
     def get_queryset(self):
         queryset = super().get_queryset()
