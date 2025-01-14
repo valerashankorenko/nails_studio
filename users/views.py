@@ -4,6 +4,7 @@ from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import UpdateView, CreateView, DetailView
 
+from online.models import OnlineRec
 from reviews.models import Review
 from users.forms import ProfileCreateUpdateForm
 
@@ -33,6 +34,7 @@ class ProfileDetailView(LoginRequiredMixin, DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['review_list'] = Review.objects.filter(author=self.object)
+        context['online_rec'] = OnlineRec.objects.filter(user=self.object)
         return context
 
 

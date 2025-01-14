@@ -11,7 +11,7 @@
         <h4>Редактирование онлайн-записи</h4>
       </div>
       <div class="card-body text-center">
-        <form method="post" action="{% url 'online:add_online_rec' %}">
+        <form method="post" action="{% url 'online:update_online_rec' object.id %}">
           {% csrf_token %}
           {% if form.errors %}
             <div class="alert alert-danger" role="alert">
@@ -49,7 +49,7 @@
             {{ form.appointment_time }}
           </div>
           <input type="hidden" name="next" value="{{ next }}">
-          <button type="submit" class="btn btn-dark">Записаться</button>
+          <button type="submit" class="btn btn-dark">Редактировать</button>
         </form>
       </div>
     </div>

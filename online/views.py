@@ -25,11 +25,17 @@ class OnlineRecUpdateView(LoginRequiredMixin, UpdateView):
     model = OnlineRec
     form_class = OnlineRecForm
     template_name = 'online_rec/online_rec_update.html'
-    success_url = reverse_lazy('online:update_online_rec')
+
+    def get_success_url(self):
+        return reverse_lazy(
+            'online:update_online_rec',
+            kwargs={'pk': self.object.pk}
+        )
 
     def form_valid(self, form):
+        form.instance.service_status = 'postponed'
         form.instance.user = self.get_object().user
-        messages.success(self.request, 'Запись успешно изменена!')
+        messages.success(self.request, 'Запись успешно перенесена!')
         return super().form_valid(form)
 
 

@@ -1,7 +1,9 @@
 {% extends "base.html" %}
 {% load django_bootstrap5 %}
 
-{% block title %}Личный кабинет{% endblock %}
+{% block title %}
+    Личный кабинет
+{% endblock %}
 
 {% block content %}
 <div class="container">
@@ -23,8 +25,59 @@
         </a>
       </div>
       {% endif %}
+      <div class="card" style="background-color: rgba(255, 255, 255, 0.5);">
+      <div class="card-header text-center mt-1 mb-2">
+      <h5 class="text-center">Ваши записи</h5>
+      </div>
+      <div class="card-body">
+      <div class="table-responsive mb-4 text-center">
+        <table class="table table-bordered custom-table">
+          <thead class="table-dark">
+            <tr>
+              <th>Дата</th>
+              <th>Время</th>
+              <th>Тип услуги</th>
+              <th>Статус</th>
+              <th>Действия</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% if online_rec %}
+              {% for online in online_rec %}
+              <tr>
+                <td>{{ online.appointment_date|date:"d.m.Y" }}</td>
+                <td>{{ online.appointment_time|date:"H:i" }}</td>
+                <td>{{ online.get_service_type_display }}</td>
+                <td>{{ online.get_service_status_display }}</td>
+                <td>
+                  {% if user == online.user %}
+                  <a class="btn btn-outline-dark btn-sm me-2" href="{% url 'online:update_online_rec' online.id %}">
+                    <i class="bi bi-pencil"></i> Перенести
+                  </a>
+                  <a class="btn btn-outline-danger btn-sm" href="{% url 'online:delete_online_rec' online.id %}">
+                    <i class="bi bi-trash"></i> Отменить
+                  </a>
+                  {% endif %}
+                </td>
+              </tr>
+              {% endfor %}
+            {% else %}
+              <tr>
+                <td colspan="5" class="text-center text-dark">У вас пока нет записей</td>
+              </tr>
+            {% endif %}
+          </tbody>
+        </table>
+      </div>
 
-      <h5 class="text-center mb-4">Ниже Вы можете отредактировать или удалить свой отзыв</h5>
+      <div class="text-center">
+        <a class="btn btn-outline-dark btn-sm" href="{% url 'online:add_online_rec' %}">
+          <i class="bi bi-pencil"></i> Записаться на маникюр
+        </a>
+      </div>
+      </div>
+      </div>
+      <h5 class="text-center mb-4 mt-4">Ниже Вы можете отредактировать или удалить свой отзыв</h5>
 
       <div class="row justify-content-center">
         {% if review_list %}
