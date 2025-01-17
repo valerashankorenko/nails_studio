@@ -40,7 +40,7 @@ class OnlineRecUpdateView(LoginRequiredMixin, UpdateView):
 
 
 class OnlineRecDeleteView(LoginRequiredMixin, DeleteView):
-    """Удаление онлайн-записи, требующее логина."""
+    """Удаление(отмена) онлайн-записи, требующее логина."""
     model = OnlineRec
     template_name = 'online_rec/online_rec_confirm_delete.html'
     success_url = reverse_lazy('pages:index')
