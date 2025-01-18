@@ -111,6 +111,11 @@
                 <p class="card-text">{{ review.text }}</p>
               </div>
               <div class="card-footer text-center">
+                {% if review.like_count > 0 %}
+                    <span class="heart-icon {% if review.user_has_liked %}liked{% endif %}">❤️ {{ review.like_count }}</span> 
+                {% else %}
+                    <span class="heart-icon">🤍</span>
+                {% endif %}  
                 <small class="text-dark">Опубликовано: {{ review.created_at|date:"d.m.Y в H:i" }}</small>
               </div>
               {% if user == review.author %}

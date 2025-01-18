@@ -13,4 +13,6 @@ urlpatterns = [
          name='update_review'),
     path('delete_review/<int:pk>/', views.DeleteReviewView.as_view(),
          name='delete_review'),
+    path('like/<int:pk>/', views.LikeView.as_view(),
+         name='like_review'),
 ]

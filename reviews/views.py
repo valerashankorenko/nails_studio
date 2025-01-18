@@ -1,14 +1,15 @@
 import locale
 
+from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
 from django.utils import timezone
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.paginator import Paginator
 from django.urls import reverse_lazy
-from django.views.generic import CreateView, UpdateView, DeleteView, ListView
-
+from django.views.generic import (CreateView, UpdateView,
+                                  DeleteView, ListView, View)
 from reviews.forms import ReviewForm
-from reviews.models import Review
+from reviews.models import Review, Like
 
 
 class ReviewListView(ListView):
@@ -95,3 +96,26 @@ class DeleteReviewView(LoginRequiredMixin, DeleteView):
     def get_queryset(self):
         queryset = super().get_queryset()
         return queryset.filter(author=self.request.user)
+
+
+class LikeView(LoginRequiredMixin, View):
+    def post(self, request, pk):
+        review = get_object_or_404(
+            Review,
+            pk=pk
+        )
+        like, created = Like.objects.get_or_create(
+            user=request.user,
+            review=review
+        )
+
+        if created:
+            liked = True
+        else:
+            like.delete()
+            liked = False
+        like_count = review.like_count()
+        return JsonResponse(
+            {'liked': liked,
+             'like_count': like_count}
+        )

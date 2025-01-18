@@ -32,7 +32,17 @@
                             <div class="card-body">
                                 {{ review.text }}
                             </div>
-                            <div class="card-header text-center">
+                            <div class="card-footer text-center">
+                                <button class="like-button" 
+                                        data-review-id="{{ review.id }}" 
+                                        data-liked="{{ review.user_has_liked|yesno:'true,false' }}">
+                                    {% if review.like_count > 0 %}
+                                        <span class="heart-icon {% if review.user_has_liked %}liked{% endif %}">❤️</span> 
+                                        <span class="like-count">{{ review.like_count }}</span>
+                                    {% else %}
+                                        <span class="heart-icon">🤍</span>
+                                    {% endif %}
+                                </button>
                                 {{ review.created_at|date:"d.m.Y в H:i" }}
                             </div>
                         </div>
@@ -56,4 +66,52 @@
         </ul>
     {% endif %}
 </div>
+<script>
+$(document).ready(function() {
+    // Устанавливаем состояние кнопки при загрузке страницы
+    $('.like-button').each(function() {
+        var liked = $(this).data('liked') === 'true';
+        var likeCount = $(this).find('.like-count').text().trim(); // Получаем количество лайков из текста
+        var heartIcon = $(this).find('.heart-icon');
+
+        if (liked) {
+            heartIcon.addClass('liked'); // Если лайкнутый, добавляем класс
+            heartIcon.html('❤️'); // Красное сердечко
+        } else {
+            if (likeCount == 0) {
+                heartIcon.html('🤍'); // Прозрачное сердечко
+            }
+        }
+    });
+
+    $('.like-button').on('click', function() {
+        var reviewId = $(this).data('review-id');
+        var button = $(this);
+        var heartIcon = button.find('.heart-icon');
+        var likeCountElement = button.find('.like-count');
+    
+        $.ajax({
+            url: "{% url 'reviews:like_review' 0 %}".replace('0', reviewId),
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': '{{ csrf_token }}'
+            },
+            success: function(data) {
+                var likeCount = data.like_count;
+                if (data.liked) {
+                    heartIcon.addClass('liked');
+                    heartIcon.html('❤️');
+                } else {
+                    heartIcon.removeClass('liked');
+                    heartIcon.html('🤍');
+                }
+                likeCountElement.text(likeCount > 0 ? likeCount : '');
+            },
+            error: function(xhr, errmsg, err) {
+                console.log(xhr.status + ": " + xhr.responseText);
+            }
+        });
+    });
+});
+</script>
 {% endblock %}

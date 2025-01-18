@@ -31,3 +31,28 @@ class Review(models.Model):
 
     def __str__(self):
         return f'Отзыв от {self.author} {self.created_at}'
+
+    def like_count(self):
+        return self.likes.count()
+
+
+class Like(models.Model):
+    """
+    Модель для лайков отзывов клиентов.
+    """
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name='likes'
+    )
+    review = models.ForeignKey(
+        Review,
+        on_delete=models.CASCADE,
+        related_name='likes'
+    )
+
+    class Meta:
+        unique_together = ('user', 'review')
+
+    def __str__(self):
+        return f'{self.user} liked {self.review}'

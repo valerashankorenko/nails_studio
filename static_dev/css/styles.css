@@ -338,6 +338,25 @@ input[type="radio"]:checked {
     }
 }
 
+/* Страница отзывы */
+.card-footer {
+    display: flex; /* Используем Flexbox */
+    justify-content: space-between; /* Размещаем элементы по краям */
+    align-items: center; /* Выравниваем по центру по вертикали */
+}
+
+.like-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1em;
+    color: inherit;
+}
+
+.like-button.liked {
+    color: red;
+}
+
 /* Footer */
 footer {
     width: 100%; /* Футер занимает всю ширину экрана */
