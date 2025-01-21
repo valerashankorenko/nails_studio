@@ -36,11 +36,17 @@
                                 <button class="like-button" 
                                         data-review-id="{{ review.id }}" 
                                         data-liked="{{ review.user_has_liked|yesno:'true,false' }}">
+                                    <span class="heart-icon {% if review.user_has_liked %}liked{% endif %}">
+                                        {% if review.like_count > 0 %}
+                                            ❤️
+                                        {% else %}
+                                            🤍
+                                        {% endif %}
+                                    </span>
                                     {% if review.like_count > 0 %}
-                                        <span class="heart-icon {% if review.user_has_liked %}liked{% endif %}">❤️</span> 
                                         <span class="like-count">{{ review.like_count }}</span>
                                     {% else %}
-                                        <span class="heart-icon">🤍</span>
+                                       <span class="like-count"></span>
                                     {% endif %}
                                 </button>
                                 {{ review.created_at|date:"d.m.Y в H:i" }}
@@ -68,19 +74,16 @@
 </div>
 <script>
 $(document).ready(function() {
-    // Устанавливаем состояние кнопки при загрузке страницы
     $('.like-button').each(function() {
         var liked = $(this).data('liked') === 'true';
-        var likeCount = $(this).find('.like-count').text().trim(); // Получаем количество лайков из текста
+        var likeCount = $(this).find('.like-count').text().trim();
         var heartIcon = $(this).find('.heart-icon');
 
         if (liked) {
-            heartIcon.addClass('liked'); // Если лайкнутый, добавляем класс
-            heartIcon.html('❤️'); // Красное сердечко
-        } else {
-            if (likeCount == 0) {
-                heartIcon.html('🤍'); // Прозрачное сердечко
-            }
+            heartIcon.addClass('liked');
+            heartIcon.html('❤️');
+        } else if (likeCount == 0) {
+            heartIcon.html('🤍');
         }
     });
 
@@ -89,7 +92,8 @@ $(document).ready(function() {
         var button = $(this);
         var heartIcon = button.find('.heart-icon');
         var likeCountElement = button.find('.like-count');
-    
+        var likeCount = parseInt(likeCountElement.text()) || 0;
+
         $.ajax({
             url: "{% url 'reviews:like_review' 0 %}".replace('0', reviewId),
             method: 'POST',
@@ -97,15 +101,20 @@ $(document).ready(function() {
                 'X-CSRFToken': '{{ csrf_token }}'
             },
             success: function(data) {
-                var likeCount = data.like_count;
+                var newLikeCount = data.like_count;
+
+                // Обновление состояния лайка
                 if (data.liked) {
                     heartIcon.addClass('liked');
                     heartIcon.html('❤️');
                 } else {
                     heartIcon.removeClass('liked');
-                    heartIcon.html('🤍');
+                    heartIcon.html(newLikeCount > 0 ? '❤️' : '🤍');
                 }
-                likeCountElement.text(likeCount > 0 ? likeCount : '');
+
+                // Обновление количества лайков
+                likeCountElement.text(newLikeCount > 0 ? newLikeCount : "");
+
             },
             error: function(xhr, errmsg, err) {
                 console.log(xhr.status + ": " + xhr.responseText);

@@ -99,6 +99,7 @@ class DeleteReviewView(LoginRequiredMixin, DeleteView):
 
 
 class LikeView(LoginRequiredMixin, View):
+    """Добавление лайка на отзыв."""
     def post(self, request, pk):
         review = get_object_or_404(
             Review,
