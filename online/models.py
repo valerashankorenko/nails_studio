@@ -5,9 +5,7 @@ from django.core.exceptions import ValidationError
 from online.validators import validate_appointment_date
 from pages.models import PriceList, PriceList1
 
-
 User = get_user_model()
-
 
 class OnlineRec(models.Model):
     """
@@ -73,12 +71,13 @@ class OnlineRec(models.Model):
         verbose_name_plural = 'Онлайн-записи'
 
     def __str__(self):
-        return (f'Запись от {self.user} на {self.get_service_type_display()}'
-                f' {self.appointment_date} в {self.appointment_time}')
+        return (f'Запись от {self.user} на {self.get_service_type_display()} '
+                f'{self.appointment_date} в {self.appointment_time}')
 
     def clean(self):
         super().clean()
-        # Проверка на наличие записи с той же датой и временем
+
+        # Проверка на дублирование записи на тот же день и время
         if self.appointment_date and self.appointment_time:
             existing_records = OnlineRec.objects.filter(
                 appointment_date=self.appointment_date,
@@ -91,6 +90,6 @@ class OnlineRec(models.Model):
                 formatted_date = self.appointment_date.strftime('%d.%m.%Y')
                 formatted_time = self.appointment_time.strftime('%H:%M')
                 raise ValidationError(
-                    f'На {formatted_date} в {formatted_time} '
-                    f'уже есть запись. Пожалуйста, выберите другое время.'
+                    f'На {formatted_date} в {formatted_time} уже есть запись. '
+                    f'Пожалуйста, выберите другое время.'
                 )

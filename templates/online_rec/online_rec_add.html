@@ -21,7 +21,7 @@
           {% if messages %}
             <div class="alert alert-info" role="alert">
               {% for message in messages %}
-                {{ message }}
+                {{ message|safe }}
               {% endfor %}
             </div>
           {% endif %}
