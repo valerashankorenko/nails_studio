@@ -1,5 +1,6 @@
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.http import Http404
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.utils import timezone
@@ -49,6 +50,15 @@ class OnlineRecUpdateView(LoginRequiredMixin, UpdateView):
     model = OnlineRec
     form_class = OnlineRecForm
     template_name = 'online_rec/online_rec_update.html'
+
+    def get_queryset(self):
+        return OnlineRec.objects.filter(user=self.request.user)
+
+    def get_object(self, queryset=None):
+        obj = super().get_object(queryset)
+        if obj.user != self.request.user:
+            raise Http404('У вас нет прав на редактирование этой записи.')
+        return obj
 
     def get_success_url(self):
         return reverse_lazy(
