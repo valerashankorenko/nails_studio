@@ -17,7 +17,7 @@
 
       {% if user.is_authenticated and request.user == user %}
       <div class="d-flex justify-content-center mb-4">
-        <a class="btn btn-outline-dark btn-m me-3 shadow-sm" href="{% url 'users:edit_profile' %}">
+        <a class="btn btn-outline-dark btn-m me-3 shadow-sm" href="{% url 'users:edit_profile' user.username %}">
           <i class="bi bi-pencil"></i> Редактировать профиль
         </a>
         <a class="btn btn-outline-dark btn-m shadow-sm" href="{% url 'password_change' %}">

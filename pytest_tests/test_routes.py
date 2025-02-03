@@ -46,11 +46,7 @@ def test_pages_availability_for_anonymous_user(client, name):
     - name: Имя URL-шаблона в формате 'app:url_name'
     """
     url = reverse(name)
-
-    try:
-        response = client.get(url)
-    except Exception as e:
-        pytest.fail(f'Ошибка при обращении к странице {name}: {str(e)}')
+    response = client.get(url)
 
     assert response.status_code == HTTPStatus.OK, (
         f'Страница {name} должна быть доступна анонимным пользователям. '
@@ -63,6 +59,7 @@ def test_pages_availability_for_anonymous_user(client, name):
     (
             # Users app
             'logout',
+            'password_reset',
 
             # Reviews app
             'reviews:add_review',
@@ -72,6 +69,7 @@ def test_pages_availability_for_anonymous_user(client, name):
     ),
     ids=[
         'Страница выхода',
+        'Сброс пароля',
         'Создание отзыва',
         'Создание онлайн-записи',
     ]
@@ -89,12 +87,7 @@ def test_pages_availability_for_authorized_user(author_client, name):
     - name: Имя URL-шаблона в формате 'app:url_name'
     """
     url = reverse(name)
-
-    try:
-        response = author_client.get(url)
-    except Exception as e:
-        pytest.fail(f'Ошибка при обращении к странице {name}: {str(e)}')
-
+    response = author_client.get(url)
     assert response.status_code == HTTPStatus.OK, (
         f'Страница {name} должна быть доступна авторизированным пользователям.'
         f' Получен статус: {response.status_code}'
@@ -111,23 +104,16 @@ def test_pages_availability_for_authorized_user(author_client, name):
 @pytest.mark.parametrize(
     ('url_name', 'url_kwargs'),
     [
-        # Users app
         ('users:profile', {'username': 'Автор'}),
-        ('users:edit_profile', None),
-        ('password_reset', None),
-
-        # Reviews app
+        ('users:edit_profile', {'username': 'Автор'}),
         ('reviews:update_review', {'pk': 1}),
         ('reviews:delete_review', {'pk': 1}),
-
-        # Online app
         ('online:update_online_rec', {'pk': 1}),
         ('online:delete_online_rec', {'pk': 1}),
     ],
     ids=[
         'Профиль пользователя',
         'Редактирование профиля',
-        'Сброс пароля',
         'Редактирование отзыва',
         'Удаление отзыва',
         'Редактирование записи',
@@ -143,25 +129,33 @@ def test_access_control(
         review,
         online_rec
 ):
+    """
+        Тестирует контроль доступа к страницам для разных типов пользователей.
+
+        Проверяет, что указанные URL-адреса:
+        - Возвращают ожидаемый статус ответа (OK или NOT_FOUND)
+        - Доступны только авторам связанных объектов (отзывов, записей) или владельцам профиля
+        - Корректно обрабатывают динамические параметры (pk объектов)
+
+        Параметры теста:
+        - client_fixture: Фикстура клиента (author_client/not_author_client)
+        - expected_status: Ожидаемый HTTP-статус ответа
+        - url_name: Имя URL-шаблона в формате 'app:url_name'
+        - url_kwargs: Параметры для формирования URL (username/pk)
+        - review/online_rec: Фикстуры тестовых объектов для проверки доступа
+
+        Тест параметризован для проверки:
+        - Разных типов клиентов (автор/не автор)
+        - Набора защищенных страниц (профиль, редактирование, удаление)
+        - Динамической подстановки pk из тестовых объектов
+        """
     client = request.getfixturevalue(client_fixture)
 
-    # Подставляем актуальные pk из фикстур
+    # Обработка динамических pk
     if url_kwargs and 'pk' in url_kwargs:
-        if 'review' in url_name:
-            url_kwargs['pk'] = review.pk
-        else:
-            url_kwargs['pk'] = online_rec.pk
-
-    # Для профиля подставляем правильный username
-    if url_name == 'users:profile':
-        user = request.getfixturevalue(client_fixture.replace('_client', ''))
-        url_kwargs['username'] = user.username
-
-    try:
-        url = reverse(url_name, kwargs=url_kwargs or None)
-    except Exception as e:
-        pytest.fail(f'Ошибка формирования URL для {url_name}: {str(e)}')
-
+        model = review if 'review' in url_name else online_rec
+        url_kwargs['pk'] = model.pk
+    url = reverse(url_name, kwargs=url_kwargs or None)
     response = client.get(url)
     assert response.status_code == expected_status, (
         f'Ошибка доступа к {url_name} с параметрами {url_kwargs}: '
