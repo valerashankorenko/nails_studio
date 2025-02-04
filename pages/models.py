@@ -71,6 +71,7 @@ class Info(models.Model):
     text = models.TextField('Текст совета')
 
     class Meta:
+        ordering = ('-id',)
         verbose_name = 'совет'
         verbose_name_plural = 'Советы'
 

@@ -63,7 +63,6 @@ class InfoPage(ListView):
     model = Info
     template_name = 'pages/info.html'
     context_object_name = 'infos'
-    ordering = ['-id']
     paginate_by = 3
 
 

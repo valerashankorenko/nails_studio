@@ -2,6 +2,7 @@ from http import HTTPStatus
 
 import pytest
 from django.urls import reverse
+from pytest_django.asserts import assertRedirects
 
 
 @pytest.mark.parametrize(
@@ -163,3 +164,43 @@ def test_access_control(
         f'ожидался {expected_status} для клиента {client_fixture}'
     )
 
+
+@pytest.mark.parametrize(
+    'name',
+    (
+        # Reviews app
+        'reviews:add_review',
+
+        # Online app
+        'online:add_online_rec',
+    ),
+    ids=[
+        'Добавление отзыва: редирект анонима',
+        'Онлайн-запись: редирект анонима',
+    ]
+)
+def test_redirects_for_anonymous_user(client, name):
+    """
+    Тестирует редирект анонимных пользователей на страницу входа при доступе к защищённым страницам.
+
+    Проверяет, что при попытке перейти по указанным URL-адресам:
+    - Происходит перенаправление на страницу входа (код 302)
+    - URL перенаправления содержит параметр `next` с исходным адресом
+
+    Параметры теста:
+    - name: Имя URL-шаблона в формате 'app:url_name'
+    """
+    login_url = reverse('login')
+    url = reverse(name)
+    expected_url = f'{login_url}?next={url}'
+    response = client.get(url)
+
+    assert response.status_code == HTTPStatus.FOUND, (
+        f'Страница {name}: ожидался статус 302,  '
+        f'получен {response.status_code}.Ответ не является перенаправлением.'
+    )
+    assertRedirects(response, expected_url)
+    assert f'next={url}' in response.url, (
+        f'URL перенаправления должен содержать параметр next: '
+        f'Ожидалось: {expected_url}\nПолучено: {response.url}'
+    )

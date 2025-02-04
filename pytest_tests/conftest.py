@@ -1,5 +1,6 @@
 import pytest
 from django.test.client import Client
+from django.utils import timezone
 
 
 @pytest.fixture(autouse=True)
@@ -61,6 +62,10 @@ def not_author_client(not_author):
 def review(author):
     """
     Фикстура создающая тестовый отзыв.
+
+    Особенности:
+    - Связывает отзыв с автором через фикстуру author
+    - Автоматически устанавливает текущее время в поле created_at
     """
     from reviews.models import Review
     return Review.objects.create(
@@ -73,6 +78,11 @@ def review(author):
 def online_rec(author):
     """
     Фикстура создающая тестовую запись на онлайн-сервис.
+
+    Особенности:
+    - Использует тестового автора в качестве пользователя
+    - Фиксированные дата и время записи (2023-01-01 в 12:00)
+    - Тип услуги - маникюр
     """
     from online.models import OnlineRec
     return OnlineRec.objects.create(
@@ -80,4 +90,131 @@ def online_rec(author):
         service_type='manicure',
         appointment_date='2023-01-01',
         appointment_time='12:00'
+    )
+
+
+@pytest.fixture
+def seven_reviews(django_user_model):
+    """
+    Фикстура создающая 7 опубликованных отзывов от разных пользователей.
+
+    Особенности:
+    - Генерирует уникальные пользователей для каждого отзыва
+    - Все отзывы помечены как опубликованные (is_published=True)
+    - Используется для тестирования лимитов отображения и пагинации
+    """
+    from reviews.models import Review
+    reviews = []
+    for i in range(7):
+        user = django_user_model.objects.create_user(
+            username=f'user_{i}',
+            password='testpass123',
+            phone_number=f'+37529{i:07}',
+            email=f'user_{i}@test.ru'
+        )
+        reviews.append(Review.objects.create(
+            author=user,
+            text=f'Тестовый отзыв {i}',
+            is_published=True
+        ))
+    return reviews
+
+
+@pytest.fixture
+def older_review(django_user_model):
+    """
+    Фикстура создающая опубликованный отзыв с датой создания на день раньше текущей.
+
+    Особенности:
+    - Используется для тестирования сортировки по времени создания
+    - Автор отзыва отличается от основного тестового автора
+    """
+    from reviews.models import Review
+    user = django_user_model.objects.create(
+        username='old_author',
+        phone_number='+375291111112',
+        email='old@test.ru'
+    )
+    return Review.objects.create(
+        author=user,
+        text='Старый отзыв',
+        created_at=timezone.now() - timezone.timedelta(days=1),
+        is_published=True
+    )
+
+
+@pytest.fixture
+def newer_review(django_user_model):
+    """
+    Фикстура создающая опубликованный отзыв с текущей датой создания.
+
+    Особенности:
+    - Используется для тестирования сортировки по времени создания
+    - Автор отзыва отличается от основного тестового автора
+    """
+    from reviews.models import Review
+    user = django_user_model.objects.create(
+        username='new_author',
+        phone_number='+375291111113',
+        email='new@test.ru'
+    )
+    return Review.objects.create(
+        author=user,
+        text='Новый отзыв',
+        created_at=timezone.now(),
+        is_published=True
+    )
+
+
+@pytest.fixture
+def four_infos():
+    """
+    Фикстура создающая 4 тестовых совета для страницы с информацией.
+
+    Особенности:
+    - Используется для тестирования лимита отображаемых советов
+    - Каждый совет имеет последовательную нумерацию в заголовке и тексте
+    """
+    from pages.models import Info
+    infos = []
+    for i in range(4):
+        info = Info.objects.create(
+            title=f'Совет {i}',
+            text=f'Текст совета {i}'
+        )
+        infos.append(info)
+    return infos
+
+
+@pytest.fixture
+def older_info():
+    """
+    Фикстура создающая тестовый совет с более ранним ID.
+
+    Особенности:
+    - Используется для тестирования порядка вывода советов
+    - Имитирует более старую запись в базе данных
+    """
+    from pages.models import Info
+    return Info.objects.create(
+        id=1,
+        title='Старый совет',
+        text='Текст'
+    )
+
+
+@pytest.fixture
+def newer_info():
+    """
+    Фикстура создающая тестовый совет с более поздним ID.
+
+    Особенности:
+    - Используется для тестирования порядка вывода советов
+    - Имитирует более новую запись в базе данных
+    """
+    from pages.models import Info
+    return Info.objects.create(
+        id=2,
+        title='Новый совет',
+        text='Текст'
     )
