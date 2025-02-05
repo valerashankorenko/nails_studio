@@ -1,6 +1,10 @@
+from datetime import date, timedelta
+
 import pytest
 from django.test.client import Client
 from django.utils import timezone
+
+from pages.models import PriceList, PriceList1
 
 
 @pytest.fixture(autouse=True)
@@ -88,7 +92,7 @@ def online_rec(author):
     return OnlineRec.objects.create(
         user=author,
         service_type='manicure',
-        appointment_date='2023-01-01',
+        appointment_date=date.today() + timedelta(days=1),
         appointment_time='12:00'
     )
 
@@ -218,3 +222,13 @@ def newer_info():
         title='Новый совет',
         text='Текст'
     )
+
+
+@pytest.fixture
+def service_manicure():
+    return PriceList.objects.create(service='Маникюр', price=1000)
+
+
+@pytest.fixture
+def service_pedicure():
+    return PriceList1.objects.create(service='Педикюр', price=1500)

@@ -48,10 +48,11 @@ class ReviewCreateView(LoginRequiredMixin, CreateView):
 
     def form_valid(self, form):
         form.instance.author = self.request.user
-        if Review.objects.filter(author=self.request.user,
-                                 is_published=True).exists():
-            form.add_error(None,
-                           'Вы можете оставить только один отзыв.')
+        if Review.objects.filter(author=self.request.user).exists():
+            form.add_error(
+                None,
+                'Вы можете оставить только один отзыв.'
+            )
             return self.form_invalid(form)
         return super().form_valid(form)
 

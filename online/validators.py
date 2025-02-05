@@ -10,4 +10,3 @@ def validate_appointment_date(value):
 
     if value < now:
         raise ValidationError('Дата не может быть в прошлом.')
-
