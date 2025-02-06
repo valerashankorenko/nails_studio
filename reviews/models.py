@@ -14,7 +14,7 @@ class Review(models.Model):
     )
     created_at = models.DateTimeField(
         'Дата и время публикации отзыва',
-        auto_now=True,
+        auto_now_add=True,
     )
     author = models.OneToOneField(
         User, on_delete=models.CASCADE,

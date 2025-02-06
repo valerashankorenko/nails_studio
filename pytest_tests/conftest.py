@@ -139,6 +139,7 @@ def older_review(django_user_model):
         phone_number='+375291111112',
         email='old@test.ru'
     )
+
     return Review.objects.create(
         author=user,
         text='Старый отзыв',
@@ -162,10 +163,10 @@ def newer_review(django_user_model):
         phone_number='+375291111113',
         email='new@test.ru'
     )
+
     return Review.objects.create(
         author=user,
         text='Новый отзыв',
-        created_at=timezone.now(),
         is_published=True
     )
 

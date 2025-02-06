@@ -26,7 +26,9 @@ def test_anonymous_cannot_create_review_or_online_rec(client):
 
 def test_authorized_user_review_and_rec_limits(
         author_client,
-        author
+        author,
+        service_manicure,
+        service_pedicure
 ):
     """
     Авторизированный пользователь может оставить один отзыв и онлайн записи,
@@ -46,26 +48,27 @@ def test_authorized_user_review_and_rec_limits(
 
     # Тестирование онлайн-записей
     online_url = reverse('online:add_online_rec')
-    base_date = date.today().replace(day=1)
+    base_date = date.today() + timedelta(days=1)
 
     for i in range(3):
         data = {
             'service_type': 'manicure',
-            'appointment_date': (base_date + timedelta(days=i)).isoformat(),
-            'appointment_time': f'{9 + i}:00',
+            'appointment_date': date.today(),
+            'appointment_time': '12:00',
         }
         response = author_client.post(online_url, data)
-        assert OnlineRec.objects.count() == i + 1, \
-            'Онлайн-запись не создана'
+        assert response.status_code == 200
+        assert OnlineRec.objects.count() == i + 1
 
     data = {
         'service_type': 'pedicure',
-        'appointment_date': (base_date + timedelta(days=4)).isoformat(),
+        'appointment_date': (base_date + timedelta(days=1)).isoformat(),
         'appointment_time': '18:00',
+        'service_pedicure': [service_pedicure.pk],
     }
     response = author_client.post(online_url, data)
-    assert 'Вы превысили лимит' in str(response.context['form'].errors), \
-        'Должна быть ошибка лимита'
+    assert 'Вы превысили лимит' in response.context['form'].errors, \
+        'Нельзя сделать более 3 онлайн-записей за месяц'
 
 
 def test_user_can_edit_own_content(
@@ -90,7 +93,10 @@ def test_user_can_edit_own_content(
         'Текст отзыва должен обновиться'
 
     # Редактирование онлайн-записи
-    edit_rec_url = reverse('online:update_online_rec', args=[online_rec.pk])
+    edit_rec_url = reverse(
+        'online:update_online_rec',
+        args=[online_rec.pk]
+    )
     new_data = {
         'service_type': 'pedicure',
         'appointment_date': online_rec.appointment_date.isoformat(),
@@ -136,14 +142,24 @@ def test_time_slot_validation(author_client, online_rec):
     Нельзя записаться на занятое время
     """
     online_url = reverse('online:add_online_rec')
+    formatted_date = online_rec.appointment_date.strftime('%d.%m.%Y')
+    expected_error = (f'На {formatted_date} в '
+                      f'{online_rec.appointment_time} уже есть запись. '
+                      'Пожалуйста, выберите другое время.')
+
+    # Данные для дублирующей записи
     duplicate_data = {
         'service_type': online_rec.service_type,
-        'appointment_date': online_rec.appointment_date,
+        'appointment_date': online_rec.appointment_date.isoformat(),
         'appointment_time': online_rec.appointment_time,
-        'service_manicure': [],
-        'service_pedicure': [],
     }
+
+    # Создание первой записи
+    author_client.post(online_url, duplicate_data)
+    assert OnlineRec.objects.count() == 1
+    # Попытка создания второй записи на то же время
     response = author_client.post(online_url, duplicate_data)
-    assert 'На 06.02.2025 в 12:00 уже есть запись' in str(
-        response.context['form'].errors), \
-        'Должна быть ошибка занятого времени'
+
+    # Проверка на наличие ошибки в форме
+    assert expected_error in response.context['form'].errors['__all__'], \
+        'Нельзя записаться в один день на одно и то же время'

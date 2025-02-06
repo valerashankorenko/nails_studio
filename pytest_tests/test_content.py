@@ -39,8 +39,8 @@ def test_reviews_order(client, older_review, newer_review):
     url = reverse('reviews:review')
     response = client.get(url)
     reviews = response.context['review_list']
-    assert list(reviews) == [newer_review, older_review],\
-        'Неверный порядок отзывов'
+    assert list(reviews) == [newer_review, older_review], \
+        'Отзывы должны быть отсортированы от новых к старым'
 
 
 def test_info_count_on_page(client, four_infos):

@@ -7,6 +7,7 @@ from pages.models import PriceList, PriceList1
 
 User = get_user_model()
 
+
 class OnlineRec(models.Model):
     """
     Модель для онлайн-записи
