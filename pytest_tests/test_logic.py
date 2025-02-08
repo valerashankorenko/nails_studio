@@ -53,23 +53,26 @@ def test_authorized_user_review_and_rec_limits(
     for i in range(3):
         data = {
             'service_type': 'manicure',
-            'appointment_date': date.today(),
-            'appointment_time': '12:00',
+            'appointment_date': base_date,
+            'appointment_time': f'{10 + i}:00',
+            'service_manicure': [service_manicure.pk],
+
         }
         response = author_client.post(online_url, data)
-        assert response.status_code == 200
+        assert response.status_code == 302
         assert OnlineRec.objects.count() == i + 1
 
     data = {
         'service_type': 'pedicure',
-        'appointment_date': (base_date + timedelta(days=1)).isoformat(),
+        'appointment_date': base_date,
         'appointment_time': '18:00',
         'service_pedicure': [service_pedicure.pk],
     }
     response = author_client.post(online_url, data)
-    assert 'Вы превысили лимит' in response.context['form'].errors, \
+    assert response.status_code == 200  # Убедитесь, что форма не перенаправляет
+    assert 'Вы превысили лимит записей на месяц.' in response.context[
+        'form'].errors.get('__all__', []), \
         'Нельзя сделать более 3 онлайн-записей за месяц'
-
 
 def test_user_can_edit_own_content(
         author_client,

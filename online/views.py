@@ -33,16 +33,18 @@ class OnlineRecCreateView(LoginRequiredMixin, CreateView):
         )
 
         if user_appointments_this_month.count() >= 3:
-            messages.error(
-                self.request,
-                f'Вы не можете записаться более 3 раз в месяц '
-                f'(месяц записи: {appointment_date.strftime("%B")}).<br>'
-                f'Пожалуйста, сделайте запись на другой месяц.'
-            )
-            return redirect(self.success_url)
+            form.add_error(None, 'Вы превысили лимит записей на месяц.')
+            return self.form_invalid(form)
 
         messages.success(self.request, 'Запись успешно создана!')
         return super().form_valid(form)
+
+    def form_invalid(self, form):
+        if form.cleaned_data.get('appointment_date') < timezone.now().date():
+            form.add_error('appointment_date',
+                           'Вы не можете записаться на прошедшую дату. '
+                           'Пожалуйста, выберите будущую дату.')
+        return super().form_invalid(form)
 
 
 class OnlineRecUpdateView(LoginRequiredMixin, UpdateView):
@@ -70,9 +72,8 @@ class OnlineRecUpdateView(LoginRequiredMixin, UpdateView):
         form.instance.user = self.request.user
         appointment_date = form.cleaned_data['appointment_date']
         first_day_of_month = appointment_date.replace(day=1)
-        last_day_of_month = ((first_day_of_month
-                              + timezone.timedelta(days=32)).replace(day=1)
-                             - timezone.timedelta(days=1))
+        last_day_of_month = ((first_day_of_month + timezone.timedelta(days=32)
+                              ).replace(day=1) - timezone.timedelta(days=1))
 
         user_appointments_this_month = OnlineRec.objects.filter(
             user=self.request.user,
@@ -80,16 +81,24 @@ class OnlineRecUpdateView(LoginRequiredMixin, UpdateView):
         ).exclude(pk=self.object.pk)
 
         if user_appointments_this_month.count() >= 2:
-            messages.error(
-                self.request,
-                f'Вы не можете иметь более 3 записей в месяц.<br>'
-                f'Пожалуйста, перенесите запись на другой месяц.'
-            )
-            return redirect(self.get_success_url())
+            form.add_error(None, 'Вы не можете иметь более 3 записей '
+                                 'в месяц. Пожалуйста, перенесите запись '
+                                 'на другой месяц.')
+            return self.form_invalid(form)
 
         form.instance.service_status = 'postponed'
         messages.success(self.request, 'Запись успешно перенесена!')
         return super().form_valid(form)
+
+    def form_invalid(self, form):
+        # Проверка на прошедшую дату
+        if 'appointment_date' in form.cleaned_data:
+            if form.cleaned_data['appointment_date'] < timezone.now().date():
+                form.add_error('appointment_date',
+                               'Вы не можете записаться на прошедшую дату. '
+                               'Пожалуйста, выберите будущую дату.')
+
+        return super().form_invalid(form)
 
 
 class OnlineRecDeleteView(LoginRequiredMixin, DeleteView):
