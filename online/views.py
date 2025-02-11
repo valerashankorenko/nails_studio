@@ -33,7 +33,9 @@ class OnlineRecCreateView(LoginRequiredMixin, CreateView):
         )
 
         if user_appointments_this_month.count() >= 3:
-            form.add_error(None, 'Вы превысили лимит записей на месяц.')
+            form.add_error(
+                None, 'Вы не можете создать более 3 записей в месяц. '
+                      'Пожалуйста, создайте запись в другом месяце.')
             return self.form_invalid(form)
 
         messages.success(self.request, 'Запись успешно создана!')

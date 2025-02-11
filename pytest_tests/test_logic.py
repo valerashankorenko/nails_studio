@@ -80,8 +80,10 @@ def test_authorized_user_review_and_rec_limits(
     }
     response = author_client.post(online_url, data)
     assert response.status_code == 200
-    assert 'Вы превысили лимит записей на месяц.' in response.context[
-        'form'].errors.get('__all__', []), \
+    assert (('Вы не можете создать более 3 записей в месяц. '
+            'Пожалуйста, создайте запись в другом месяце.')
+            in response.context[
+        'form'].errors.get('__all__', [])), \
         'Нельзя сделать более 3 онлайн-записей за месяц'
 
 
