@@ -9,4 +9,4 @@ def validate_appointment_date(value):
     now = timezone.now().date()
 
     if value < now:
-        raise ValidationError('Дата не может быть в прошлом.')
+        raise ValidationError('Нельзя записаться на прошедшую дату.')

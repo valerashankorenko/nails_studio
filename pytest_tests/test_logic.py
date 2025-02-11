@@ -7,7 +7,12 @@ from online.models import OnlineRec
 
 def test_anonymous_cannot_create_review_or_online_rec(client):
     """
-    Анонимный пользователь не может оставить отзыв и онлайн-запись
+    Тестирует запрет на создание отзывов и
+    онлайн-записей анонимными пользователями.
+
+    Проверяет, что при попытке создания контента без авторизации:
+    1. Происходит редирект на страницу авторизации
+    2. Записи не создаются в базе данных
     """
     review_data = {'text': 'Анонимный отзыв'}
     response = client.post(reverse('reviews:add_review'), review_data)
@@ -31,8 +36,13 @@ def test_authorized_user_review_and_rec_limits(
         service_pedicure
 ):
     """
-    Авторизированный пользователь может оставить один отзыв и онлайн записи,
-    но не более 3 онлайн-записей за месяц
+    Тестирует ограничения для авторизованных пользователей
+    при создании контента.
+
+    Проверяет:
+    1. Возможность оставить только один отзыв
+    2. Лимит в 3 онлайн-записи в месяц
+    3. Корректность сообщений об ошибках при превышении лимитов
     """
     # Тестирование отзывов
     review_url = reverse('reviews:add_review')
@@ -69,10 +79,11 @@ def test_authorized_user_review_and_rec_limits(
         'service_pedicure': [service_pedicure.pk],
     }
     response = author_client.post(online_url, data)
-    assert response.status_code == 200  # Убедитесь, что форма не перенаправляет
+    assert response.status_code == 200
     assert 'Вы превысили лимит записей на месяц.' in response.context[
         'form'].errors.get('__all__', []), \
         'Нельзя сделать более 3 онлайн-записей за месяц'
+
 
 def test_user_can_edit_own_content(
         author_client,
@@ -81,8 +92,11 @@ def test_user_can_edit_own_content(
         service_pedicure
 ):
     """
-    Авторизированный пользователь может редактировать
-    свой отзыв и онлайн-записи
+    Тестирует возможность редактирования собственного контента.
+
+    Проверяет:
+    1. Успешное обновление текста отзыва
+    2. Корректное изменение типа услуги в онлайн-записи
     """
     # Редактирование отзыва
     edit_review_url = reverse(
@@ -114,8 +128,11 @@ def test_user_can_edit_own_content(
 def test_user_cannot_edit_others_content(not_author_client, review,
                                          online_rec):
     """
-    Авторизированный пользователь не может редактировать
-    чужие отзывы и онлайн-записи
+    Тестирует запрет на редактирование чужого контента.
+
+    Проверяет:
+    1. Возвращение ошибки 404 при попытке редактирования чужого отзыва
+    2. Запрет доступа к изменению чужой онлайн-записи
     """
     edit_review_url = reverse(
         'reviews:update_review',
@@ -142,7 +159,11 @@ def test_user_cannot_edit_others_content(not_author_client, review,
 
 def test_time_slot_validation(author_client, online_rec):
     """
-    Нельзя записаться на занятое время
+    Тестирует валидацию временных интервалов для онлайн-записей.
+
+    Проверяет:
+    1. Невозможность создания двух записей на одно и то же время
+    2. Корректность сообщения об ошибке при дублировании времени
     """
     online_url = reverse('online:add_online_rec')
     formatted_date = online_rec.appointment_date.strftime('%d.%m.%Y')
@@ -157,12 +178,38 @@ def test_time_slot_validation(author_client, online_rec):
         'appointment_time': online_rec.appointment_time,
     }
 
-    # Создание первой записи
     author_client.post(online_url, duplicate_data)
     assert OnlineRec.objects.count() == 1
-    # Попытка создания второй записи на то же время
     response = author_client.post(online_url, duplicate_data)
 
-    # Проверка на наличие ошибки в форме
     assert expected_error in response.context['form'].errors['__all__'], \
         'Нельзя записаться в один день на одно и то же время'
+
+
+def test_user_cannot_create_online_rec_in_past(author_client,
+                                               service_manicure):
+    """
+    Тестирует валидацию даты при создании онлайн-записей.
+
+    Проверяет:
+    1. Невозможность создания записи на прошедшую дату
+    2. Наличие ошибки в поле appointment_date
+    """
+    online_url = reverse('online:add_online_rec')
+    past_date = date.today() - timedelta(days=1)
+    data = {
+        'service_type': 'manicure',
+        'appointment_date': past_date,
+        'appointment_time': '12:00',
+        'service_manicure': [service_manicure.pk],
+    }
+    response = author_client.post(online_url, data)
+
+    assert OnlineRec.objects.count() == 0, \
+        'Запись на прошлую дату не должна создаваться'
+    form_errors = response.context['form'].errors
+    assert 'appointment_date' in form_errors, \
+        'Ошибка должна быть в поле appointment_date'
+    assert 'Нельзя записаться на прошедшую дату.' in form_errors[
+        'appointment_date'], \
+        'Должна быть ошибка о записи на прошедшую дату'
