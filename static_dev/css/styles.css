@@ -424,3 +424,10 @@ img {
         font-size: 11px; /* Уменьшите размер шрифта для мобильных устройств */
     }
 }
+
+/* Профиль */
+.card-profile {
+    padding: 5px;
+    border-radius: 15px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}

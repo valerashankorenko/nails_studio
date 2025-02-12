@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% load django_bootstrap5 %}
+
+{% block title %}
+Удаление профиля
+{% endblock %}
+
+{% block content %}
+<div class="col d-flex justify-content-center">
+    <div class="card" style="width: 23rem; background-color: rgba(255, 255, 255, 0.5);">
+      <div class="card-header text-center">
+        Удаление профиля
+      </div>
+        <div class="card-body text-center">  
+            <p>Вы уверены, что хотите удалить свой профиль?</p>
+            <form method="post">
+              {% csrf_token %}
+              {% bootstrap_button button_type="submit" content="Удалить" button_class="btn-dark me-2" %}
+              <a href="{% url 'users:profile' user.username %}" class="btn btn-secondary">
+               Отмена
+              </a>
+            </form>
+        </div>
+    </div>
+</div> 
+{% endblock %}

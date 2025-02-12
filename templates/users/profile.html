@@ -9,7 +9,8 @@
 <div class="container">
   <div class="row">
     <div class="col-lg-8 offset-lg-2 col-md-10 offset-md-1">
-      <h3 class="mb-3 text-center">Личный кабинет:<br>
+    <div class="card-profile" style="background-color: rgba(255, 255, 255, 0.5);">
+      <h3 class="mt-2 text-center">Личный кабинет:<br>
           {{ user.get_full_name }}</h3>
       <div class="text-center mb-4">
         <p class="mb-1 text-dark">Регистрация: {{ user.date_joined|date:"d.m.Y в H:i" }}</p>
@@ -20,14 +21,17 @@
         <a class="btn btn-outline-dark btn-m me-3 shadow-sm" href="{% url 'users:edit_profile' user.username %}">
           <i class="bi bi-pencil"></i> Редактировать профиль
         </a>
-        <a class="btn btn-outline-dark btn-m shadow-sm" href="{% url 'password_change' %}">
+        <a class="btn btn-outline-dark btn-m me-3 shadow-sm" href="{% url 'password_change' %}">
           <i class="bi bi-lock"></i> Изменить пароль
+        </a>
+        <a class="btn btn-outline-danger btn-m shadow-sm" href="{% url 'users:profile_delete' user.username %}">
+          <i class="bi bi-lock"></i> Удалить профиль
         </a>
       </div>
       {% endif %}
-
+    </div> 
       <!-- Форма выбора месяца и года -->
-        <div class="text-center mb-4">
+        <div class="text-center mb-3 mt-3">
             <form method="GET" action="">
                 <label for="month-select">Выберите месяц:</label>
                 <select id="month-select" name="month" onchange="this.form.submit()">
@@ -48,9 +52,8 @@
                 </select>
             </form>
         </div>
-
       <div class="card" style="background-color: rgba(255, 255, 255, 0.5);">
-        <div class="card-header text-center mt-1 mb-2">
+        <div class="card-header text-center mt-2 mb-2">
           <h5 class="text-center">Ваши записи за {{ months|slice:selected_month|last|lower }} {{ selected_year }}</h5>
         </div>
         <div class="card-body">

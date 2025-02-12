@@ -1,13 +1,13 @@
 import locale
 from datetime import datetime
 
-from django.contrib.auth import get_user_model
+from django.contrib.auth import get_user_model, logout
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import Http404
 from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
 from django.utils import timezone
-from django.views.generic import UpdateView, CreateView, DetailView
+from django.views.generic import UpdateView, CreateView, DetailView, DeleteView
 
 from online.models import OnlineRec
 from reviews.models import Review
@@ -98,3 +98,25 @@ class ProfileUpdateView(LoginRequiredMixin, UpdateView):
             'users:profile',
             kwargs={'username': self.request.user.username}
         )
+
+
+class ProfileDeleteView(LoginRequiredMixin, DeleteView):
+    """
+    Удаление профиля, требующее логина.
+    """
+    model = User
+    template_name = 'users/profile_confirm_delete.html'
+    success_url = reverse_lazy('pages:index')
+    slug_field = 'username'
+    slug_url_kwarg = 'username'
+
+    def get_object(self, queryset=None):
+        user = super().get_object(queryset)
+        if user != self.request.user:
+            raise Http404('Удаление чужого профиля запрещено')
+        return user
+
+    def delete(self, request, *args, **kwargs):
+        response = super().delete(request, *args, **kwargs)
+        logout(request)
+        return response
