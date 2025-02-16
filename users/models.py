@@ -1,6 +1,5 @@
 from django.contrib.auth.models import AbstractUser
 from django.core import validators
-from django.core.validators import MinLengthValidator, MaxLengthValidator
 from django.db import models
 
 
@@ -38,11 +37,6 @@ class User(AbstractUser):
         'Статус пользователя',
         default=True,
         help_text='Снимите галочку, чтобы заблокировать пользователя.',
-    )
-    password = models.CharField(
-        'Пароль',
-        max_length=150,
-        validators=(MinLengthValidator(8), MaxLengthValidator(150)),
     )
 
     USERNAME_FIELD = 'email'

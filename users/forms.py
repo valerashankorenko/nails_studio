@@ -1,15 +1,15 @@
+from django import forms
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm
 
 User = get_user_model()
 
 
-class ProfileCreateUpdateForm(UserCreationForm):
+class BaseProfileForm(forms.ModelForm):
     """
-    Форма для создания и редактирования пользователя
+    Базовая форма для профиля пользователя.
     """
-
-    class Meta(UserCreationForm.Meta):
+    class Meta:
         model = User
         fields = (
             'first_name',
@@ -17,3 +17,19 @@ class ProfileCreateUpdateForm(UserCreationForm):
             'email',
             'phone_number',
         )
+
+
+class ProfileCreateForm(UserCreationForm):
+    """
+    Форма для создания пользователя.
+    """
+    class Meta(UserCreationForm.Meta):
+        model = User
+        fields = BaseProfileForm.Meta.fields
+
+
+class ProfileUpdateForm(BaseProfileForm):
+    """
+    Форма для редактирования профиля пользователя.
+    """
+    pass

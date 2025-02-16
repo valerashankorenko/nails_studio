@@ -11,7 +11,7 @@ from django.views.generic import UpdateView, CreateView, DetailView, DeleteView
 
 from online.models import OnlineRec
 from reviews.models import Review
-from users.forms import ProfileCreateUpdateForm
+from users.forms import ProfileCreateForm, ProfileUpdateForm
 
 User = get_user_model()
 
@@ -21,7 +21,7 @@ class ProfileCreateView(CreateView):
     Создание пользователя
     """
     model = User
-    form_class = ProfileCreateUpdateForm
+    form_class = ProfileCreateForm
     template_name = 'registration/registration_form.html'
     success_url = reverse_lazy('login')
 
@@ -78,7 +78,7 @@ class ProfileUpdateView(LoginRequiredMixin, UpdateView):
     Редактирование профиля, требующее логина.
     """
     model = User
-    form_class = ProfileCreateUpdateForm
+    form_class = ProfileUpdateForm
     template_name = 'users/user.html'
     slug_field = 'username'
     slug_url_kwarg = 'username'

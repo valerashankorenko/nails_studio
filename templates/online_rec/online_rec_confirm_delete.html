@@ -13,7 +13,10 @@
             <p>Вы уверены, что хотите отменить запись?</p>
             <form method="post">
               {% csrf_token %}
-              {% bootstrap_button button_type="submit" content="Отменить" button_class="btn-dark" %}
+              {% bootstrap_button button_type="submit" content="Отменить" button_class="btn-dark me-2" %}
+              <a href="{% url 'users:profile' user.username %}" class="btn btn-secondary">
+               Отмена
+              </a>  
             </form>
         </div>
     </div>
