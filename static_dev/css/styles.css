@@ -207,7 +207,7 @@ main {
 }
 
 .custom-table tbody tr:hover {
-    background-color: rgba(255, 215, 0, 0.2); /* Цвет фона при наведении на строку */
+    background-color: rgb(168, 161, 161, 0.5); /* Цвет фона при наведении на строку */
 }
 
 .card {
@@ -430,4 +430,54 @@ img {
     padding: 5px;
     border-radius: 15px;
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.profile-table {
+    border-radius: 3px;
+    margin-bottom: 20px;
+    overflow: hidden;
+    width: 100%; /* Убедитесь, что таблица занимает 100% ширины */
+    table-layout: auto; /* Автоматическая ширина столбцов */
+}
+
+.profile-table thead {
+    background-color: black; /* Цвет фона заголовка таблицы */
+    border: 1px solid white; /* Установка черной границы для заголовков ячеек */
+}
+
+.profile-table th {
+    padding: 15px;
+    text-align: center;
+    color: white; /* Цвет текста заголовка */
+}
+
+.profile-table td {
+    padding: 15px;
+    text-align: center;
+    color: black; /* Цвет текста ячеек */
+    border: 1px solid black; /* Установка черной границы для ячеек */
+    word-wrap: break-word; /* Позволяет переносить длинные слова */
+    white-space: normal; /* Позволяет переносу строк */
+}
+
+.profile-table tbody tr {
+    transition: background-color 0.3s ease; /* Плавный переход фона при наведении */
+    border: 1px solid black; /* Установка черной границы для строк */
+}
+
+.profile-table tbody tr:hover {
+    background-color: rgb(168, 161, 161, 0.5); /* Цвет фона при наведении на строку */
+}
+@media (max-width: 768px) {
+    .table-responsive {
+        overflow-x: auto;
+    }
+    .profile-table td {
+        font-size: 12px; /* Уменьшение размера шрифта */
+        padding: 10px;   /* Уменьшение отступов */
+    }
+
+    .profile-table th {
+        font-size: 13px; /* Уменьшение размера шрифта заголовка */
+    }
 }

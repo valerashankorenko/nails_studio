@@ -8,7 +8,7 @@
 {% block content %}
 <div class="container">
   <div class="row">
-    <div class="col-lg-8 offset-lg-2 col-md-10 offset-md-1">
+    <div class="col-12 col-lg-8 offset-lg-2 col-md-10 offset-md-1">
     <div class="card-profile" style="background-color: rgba(255, 255, 255, 0.5);">
       <h3 class="mt-2 text-center">Личный кабинет:<br>
           {{ user.get_full_name }}</h3>
@@ -17,17 +17,17 @@
       </div>
 
       {% if user.is_authenticated and request.user == user %}
-      <div class="d-flex justify-content-center mb-4">
-        <a class="btn btn-outline-dark btn-m me-3 shadow-sm" href="{% url 'users:edit_profile' user.username %}">
-          <i class="bi bi-pencil"></i> Редактировать профиль
-        </a>
-        <a class="btn btn-outline-dark btn-m me-3 shadow-sm" href="{% url 'password_change' %}">
-          <i class="bi bi-lock"></i> Изменить пароль
-        </a>
-        <a class="btn btn-outline-danger btn-m shadow-sm" href="{% url 'users:profile_delete' user.username %}">
-          <i class="bi bi-lock"></i> Удалить профиль
-        </a>
-      </div>
+      <div class="col-12 d-flex flex-column flex-md-row justify-content-center align-items-center mb-4">
+          <a class="btn btn-outline-dark btn-m me-md-3 mb-2 mb-md-0 shadow-sm" href="{% url 'users:edit_profile' user.username %}">
+            <i class="bi bi-pencil"></i> Редактировать профиль
+          </a>
+          <a class="btn btn-outline-dark btn-m me-md-3 mb-2 mb-md-0 shadow-sm" href="{% url 'password_change' %}">
+            <i class="bi bi-lock"></i> Изменить пароль
+          </a>
+          <a class="btn btn-outline-danger btn-m shadow-sm" href="{% url 'users:profile_delete' user.username %}">
+            <i class="bi bi-lock"></i> Удалить профиль
+          </a>
+        </div>
       {% endif %}
     </div> 
       <!-- Форма выбора месяца и года -->
@@ -57,14 +57,13 @@
           <h5 class="text-center">Ваши записи за {{ months|slice:selected_month|last|lower }} {{ selected_year }}</h5>
         </div>
         <div class="card-body">
-          <div class="table-responsive mb-4 text-center">
-            <table class="table table-bordered custom-table">
+          <div class="table-responsive mb-3 text-center">
+            <table class="table table-striped table-bordered profile-table">
               <thead class="table-dark">
                 <tr>
                   <th>Дата</th>
                   <th>Время</th>
-                  <th>Тип услуги</th>
-                  <th>Статус</th>
+                  <th>Услуги</th>
                   <th>Действия</th>
                 </tr>
               </thead>
@@ -75,7 +74,6 @@
                     <td>{{ online.appointment_date|date:"d.m.Y" }}</td>
                     <td>{{ online.appointment_time|date:"H:i" }}</td>
                     <td>{{ online.get_service_type_display }}</td>
-                    <td>{{ online.get_service_status_display }}</td>
                     <td>
                       <a class="btn btn-outline-dark btn-sm me-2" href="{% url 'online:update_online_rec' online.id %}">
                         <i class="bi bi-pencil"></i> Перенести
@@ -119,7 +117,7 @@
                 {% else %}
                     <span class="heart-icon">🤍</span>
                 {% endif %}  
-                <small class="text-dark">Опубликовано: {{ review.created_at|date:"d.m.Y в H:i" }}</small>
+                <small class="text-dark">Опубликован: {{ review.created_at|date:"d.m.Y в H:i" }}</small>
               </div>
               {% if user == review.author %}
               <div class="text-center mt-2 mb-2">
