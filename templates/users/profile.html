@@ -15,7 +15,6 @@
       <div class="text-center mb-4">
         <p class="mb-1 text-dark">Регистрация: {{ user.date_joined|date:"d.m.Y в H:i" }}</p>
       </div>
-
       {% if user.is_authenticated and request.user == user %}
       <div class="col-12 d-flex flex-column flex-md-row justify-content-center align-items-center mb-4">
           <a class="btn btn-outline-dark btn-m me-md-3 mb-2 mb-md-0 shadow-sm" href="{% url 'users:edit_profile' user.username %}">
@@ -61,8 +60,7 @@
             <table class="table table-striped table-bordered profile-table">
               <thead class="table-dark">
                 <tr>
-                  <th>Дата</th>
-                  <th>Время</th>
+                  <th>Дата и время</th>
                   <th>Услуги</th>
                   <th>Действия</th>
                 </tr>
@@ -70,17 +68,28 @@
               <tbody>
                 {% if online_rec %}
                   {% for online in online_rec %}
-                  <tr>
-                    <td>{{ online.appointment_date|date:"d.m.Y" }}</td>
-                    <td>{{ online.appointment_time|date:"H:i" }}</td>
-                    <td>{{ online.get_service_type_display }}</td>
+                  <tr  class="justify-content-center align-items-center">
                     <td>
-                      <a class="btn btn-outline-dark btn-sm me-2" href="{% url 'online:update_online_rec' online.id %}">
-                        <i class="bi bi-pencil"></i> Перенести
-                      </a>
-                      <a class="btn btn-outline-danger btn-sm" href="{% url 'online:delete_online_rec' online.id %}">
-                        <i class="bi bi-trash"></i> Отменить
-                      </a>
+                        {{ online.appointment_date|date:"d.m.Y" }}<br>
+                        {{ online.appointment_time|date:"H:i" }}
+                    </td>
+                    <td>
+                      {% for service in online.service_manicure.all %}
+                        {{ service }}{% if not forloop.last %},<br>{% endif %}
+                      {% endfor %}
+                      {% for service in online.service_pedicure.all %}
+                        {{ service }}{% if not forloop.last %},<br>{% endif %}
+                      {% endfor %}
+                    </td>
+                    <td class="text-center">
+                      <div class="button-container">
+                        <a class="btn btn-outline-dark btn-sm me-2" href="{% url 'online:update_online_rec' online.id %}">
+                          <i class="bi bi-pencil"></i> Перенести
+                        </a>
+                        <a class="btn btn-outline-danger btn-sm" href="{% url 'online:delete_online_rec' online.id %}">
+                          <i class="bi bi-trash"></i> Отменить
+                        </a>
+                      </div>
                     </td>
                   </tr>
                   {% endfor %}
@@ -92,7 +101,6 @@
               </tbody>
             </table>
           </div>
-
           <div class="text-center">
             <a class="btn btn-outline-dark btn-sm" href="{% url 'online:add_online_rec' %}">
               <i class="bi bi-pencil"></i> Записаться на маникюр
