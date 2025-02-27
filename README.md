@@ -16,9 +16,9 @@
 - Отправка письма для сброса пароля через почтовый сервер Яндекс.
 - Наполнение базы данных тестовыми данными.
 - Pytest.
+- Онлайн-запись на услуги.
 
 В разработке/планируется:
-- Онлайн-запись на услуги.
 - Интеграция Telegram-бота для оповещений.
 
 ## Автор проекта:
@@ -28,11 +28,14 @@ Telegram: 📱 [@valeron007](https://t.me/valeron007)<br/>
 E-mail: 📧 valerashankorenko@yandex.by<br/>
 
 ## Стек технологий
-- [Python](https://www.python.org/)
-- [Django](https://www.djangoproject.com/)
-- [Bootstrap](https://getbootstrap.com/)
-- [Pytest](https://docs.pytest.org/en/stable/index.html)
-- [SQLite](https://www.sqlite.org/)
+![Python](https://img.shields.io/badge/Python-3776AB?style=flat-square&logo=python&logoColor=white)
+![Django](https://img.shields.io/badge/Django-092E20?style=flat-square&logo=django&logoColor=white)
+![Bootstrap](https://img.shields.io/badge/Bootstrap-563D7C?style=flat-square&logo=bootstrap&logoColor=white)
+![HTML](https://img.shields.io/badge/HTML-E34F26?style=flat-square&logo=html5&logoColor=white)
+![CSS](https://img.shields.io/badge/CSS-1572B6?style=flat-square&logo=css3&logoColor=white)
+![Pillow](https://img.shields.io/badge/Pillow-EBEEEE?style=flat-square&logo=pillow&logoColor=black)
+![Pytest](https://img.shields.io/badge/Pytest-0E5E6F?style=flat-square&logo=pytest&logoColor=white)
+![SQLite](https://img.shields.io/badge/SQLite-003B57?style=flat-square&logo=sqlite&logoColor=white)
 
 ## Как запустить проект локально:
 1. Клонировать репозиторий и перейти в его директорию в командной строке:
