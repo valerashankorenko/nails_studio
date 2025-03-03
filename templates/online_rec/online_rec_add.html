@@ -56,20 +56,103 @@
             <label class="form-label" for="id_appointment_time">Время проведения услуги:</label>
             {{ form.appointment_time }}
           </div>
+          <div id="no-time-slots" style="display: none; color: red; margin-top: 10px;">
+            Извините свободное время закончилось.<br/>
+            Запишитесь на другую дату.
+          </div>
           <input type="hidden" name="next" value="{{ next }}">
-          <button type="submit" class="btn btn-dark">Записаться</button>
+          <button type="submit" class="btn btn-dark mt-2">Записаться</button>
         </form>
       </div>
     </div>
   </div>
 
-  <script>
-      // Показать услуги в зависимости от типа услуги
-      document.getElementById('id_service_type').addEventListener('change', function() {
+<script>
+    // Функция для обновления доступного времени
+    function updateAvailableTimeSlots() {
+        const dateInput = document.getElementById('id_appointment_date');
+        const timeSelect = document.getElementById('id_appointment_time');
+        const noTimeSlotsMessage = document.getElementById('no-time-slots');
+        const selectedDate = dateInput.value;
+    
+        // Скрываем сообщение об отсутствии слотов
+        noTimeSlotsMessage.style.display = 'none';
+    
+        if (!selectedDate) {
+            timeSelect.innerHTML = '<option value="">---------</option>';
+            return;
+        }
+    
+        // Отправляем запрос на сервер для получения доступного времени
+        fetch(`{% url 'online:get_available_time_slots' %}?appointment_date=${selectedDate}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Сетевая ошибка');
+                }
+                return response.json();
+            })
+            .then(data => {
+                // Очищаем текущие опции
+                timeSelect.innerHTML = '';
+    
+                // Добавляем пустой вариант
+                const emptyOption = document.createElement('option');
+                emptyOption.value = '';
+                emptyOption.text = '---------';
+                timeSelect.appendChild(emptyOption);
+    
+                // Проверяем, есть ли доступные временные слоты
+                if (data.time_slots && data.time_slots.length > 0) {
+                    data.time_slots.forEach(slot => {
+                        const option = document.createElement('option');
+                        option.value = slot[0];
+                        option.text = slot[1];
+                        timeSelect.appendChild(option);
+                    });
+                } else {
+                    // Если нет доступных временных слотов, показываем сообщение
+                    noTimeSlotsMessage.textContent = 'Извините свободное время закончилось. Запишитесь на другую дату.';
+                    noTimeSlotsMessage.style.display = 'block';
+                }
+            })
+            .catch(error => {
+                console.error('Ошибка при получении данных:', error);
+            });
+    }
+
+
+    // Обновляем доступное время при изменении даты
+    document.getElementById('id_appointment_date').addEventListener('change', updateAvailableTimeSlots);
+
+    // Инициализация при загрузке страницы
+    document.addEventListener('DOMContentLoaded', function() {
+        // Устанавливаем пустое значение для времени при загрузке страницы
+        const timeSelect = document.getElementById('id_appointment_time');
+        timeSelect.innerHTML = '<option value="">---------</option>';
+
+        // Обновляем время при загрузке страницы, если дата уже выбрана
+        updateAvailableTimeSlots();
+    });
+
+    // Показать услуги в зависимости от типа услуги
+    document.getElementById('id_service_type').addEventListener('change', function() {
         const value = this.value;
         document.getElementById('manicure-services').style.display = (value === 'manicure' || value === 'manicure&pedicure') ? 'block' : 'none';
         document.getElementById('pedicure-services').style.display = (value === 'pedicure' || value === 'manicure&pedicure') ? 'block' : 'none';
-      });
-  </script>
+    });
+
+    // Инициализация при загрузке страницы
+    document.addEventListener('DOMContentLoaded', function() {
+        // Устанавливаем пустое значение для времени при загрузке страницы
+        const timeSelect = document.getElementById('id_appointment_time');
+        timeSelect.innerHTML = '<option value="">---------</option>';
+
+        // Обновляем время при загрузке страницы, если дата уже выбрана
+        updateAvailableTimeSlots();
+
+        // Инициализация видимости услуг
+        document.getElementById('id_service_type').dispatchEvent(new Event('change'));
+    });
+</script>
 {% endif %}
 {% endblock %}

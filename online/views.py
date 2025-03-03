@@ -1,13 +1,68 @@
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.http import Http404
-from django.shortcuts import redirect
+from django.http import Http404, JsonResponse
 from django.urls import reverse_lazy
 from django.utils import timezone
+from django.views import View
 from django.views.generic import CreateView, UpdateView, DeleteView
+from datetime import datetime, time as datetime_time
 
 from online.forms import OnlineRecForm
 from online.models import OnlineRec
+
+
+class GetAvailableTimeSlotsView(View):
+    """
+    Представление для получения доступных временных слотов.
+    """
+    def get(self, request, *args, **kwargs):
+        appointment_date = request.GET.get('appointment_date')
+        if not appointment_date:
+            return JsonResponse({'time_slots': []})
+
+        try:
+            # Преобразуем строку даты в объект date
+            selected_date = datetime.strptime(
+                appointment_date, '%Y-%m-%d').date()
+        except ValueError:
+            return JsonResponse({'error': 'Неверный формат даты.'}, status=400)
+
+        # Получаем занятые временные слоты для выбранной даты
+        occupied_slots = OnlineRec.objects.filter(
+            appointment_date=selected_date
+        ).values_list('appointment_time', flat=True)
+
+        # Приводим занятые слоты к формату HH:MM
+        occupied_slots = [slot.strftime('%H:%M') for slot in occupied_slots]
+
+        # Генерируем все возможные слоты
+        start_hour = 8
+        end_hour = 19
+        time_slots = []
+
+        # Текущее время и дата с учетом временной зоны
+        now = timezone.localtime(timezone.now())
+        current_time = now.time()
+        current_date = now.date()
+
+        for hour in range(start_hour, end_hour + 1):
+            time_slot = f'{hour:02}:00'
+            slot_time = datetime.strptime(time_slot, '%H:%M').time()
+
+            # Проверяем, не занят ли слот и не прошел ли он
+            if time_slot not in occupied_slots:
+                if selected_date > current_date or (
+                        selected_date == current_date
+                        and slot_time > current_time):
+                    time_slots.append((time_slot, time_slot))
+
+        # Если нет свободных слотов
+        if not time_slots:
+            return JsonResponse(
+                {'error': 'Извините свободное время закончилось.'
+                          'Запишитесь на другую дату.'})
+
+        return JsonResponse({'time_slots': time_slots})
 
 
 class OnlineRecCreateView(LoginRequiredMixin, CreateView):
@@ -16,6 +71,12 @@ class OnlineRecCreateView(LoginRequiredMixin, CreateView):
     form_class = OnlineRecForm
     template_name = 'online_rec/online_rec_add.html'
     success_url = reverse_lazy('online:add_online_rec')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['get_available_time_slots_url'] = (
+            reverse_lazy('online:get_available_time_slots'))
+        return context
 
     def form_valid(self, form):
         form.instance.user = self.request.user
@@ -57,6 +118,12 @@ class OnlineRecUpdateView(LoginRequiredMixin, UpdateView):
     model = OnlineRec
     form_class = OnlineRecForm
     template_name = 'online_rec/online_rec_update.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['get_available_time_slots_url'] = (
+            reverse_lazy('online:get_available_time_slots'))
+        return context
 
     def get_queryset(self):
         return OnlineRec.objects.filter(user=self.request.user)

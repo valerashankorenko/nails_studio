@@ -2,25 +2,10 @@ from django import forms
 from online.models import OnlineRec
 
 
-def get_available_time_slots():
-    """
-    Функция для создания доступных временных слотов.
-    """
-    start_hour = 8
-    end_hour = 19
-    time_slots = []
-    for hour in range(start_hour, end_hour + 1):
-        time_slots.append((f'{hour:02}:00', f'{hour:02}:00'))
-    return time_slots
-
-
 class OnlineRecForm(forms.ModelForm):
-    """
-    Форма для создания/редактирования онлайн-записи.
-    """
     appointment_time = forms.ChoiceField(
         label='Время проведения услуги',
-        choices=get_available_time_slots(),
+        choices=[],
         required=True
     )
 
@@ -39,9 +24,23 @@ class OnlineRecForm(forms.ModelForm):
             'appointment_date': forms.DateInput(attrs={'type': 'date'}),
         }
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.fields['appointment_time'].choices = get_available_time_slots()
+    def clean(self):
+        cleaned_data = super().clean()
+        appointment_date = cleaned_data.get('appointment_date')
+        appointment_time = cleaned_data.get('appointment_time')
+
+        if appointment_date and appointment_time:
+            # Проверяем, занят ли выбранный временной слот
+            if OnlineRec.objects.filter(
+                    appointment_date=appointment_date,
+                    appointment_time=appointment_time
+            ).exists():
+                raise forms.ValidationError(
+                    'Выбранное время уже занято. '
+                    'Пожалуйста, выберите другое время.'
+                )
+
+        return cleaned_data
 
 
 class OnlineRecAdminForm(OnlineRecForm):
