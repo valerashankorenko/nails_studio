@@ -143,7 +143,7 @@ def older_review(django_user_model):
     return Review.objects.create(
         author=user,
         text='Старый отзыв',
-        created_at=timezone.now() - timezone.timedelta(days=1),
+        created_at=timezone.now() - timezone.timedelta(days=2),
         is_published=True
     )
 
@@ -167,6 +167,7 @@ def newer_review(django_user_model):
     return Review.objects.create(
         author=user,
         text='Новый отзыв',
+        created_at=timezone.now(),
         is_published=True
     )
 

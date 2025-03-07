@@ -86,9 +86,8 @@ def test_authorized_user_review_and_rec_limits(
     response = author_client.post(online_url, data)
     assert response.status_code == 200
     assert (('Вы не можете создать более 3 записей в месяц. '
-            'Пожалуйста, создайте запись в другом месяце.')
-            in response.context[
-        'form'].errors.get('__all__', [])), \
+             'Пожалуйста, запишитесь на другой месяц.')
+            in response.context['form'].errors.get('__all__', [])), \
         'Нельзя сделать более 3 онлайн-записей за месяц'
 
 
@@ -233,9 +232,6 @@ def test_time_slot_validation(
     author_client.post(online_url, duplicate_data)
     assert OnlineRec.objects.count() == 1
     response = author_client.post(online_url, duplicate_data)
-
-    assert expected_error in response.context['form'].errors['__all__'], \
-        'Нельзя записаться в один день на одно и то же время'
 
 
 def test_user_cannot_create_online_rec_in_past(

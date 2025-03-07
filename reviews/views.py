@@ -17,6 +17,7 @@ class ReviewListView(ListView):
     model = Review
     template_name = 'reviews/review_list.html'
     context_object_name = 'review_list'
+    ordering = ['-created_at']
     paginate_by = 6
 
     def get_queryset(self):

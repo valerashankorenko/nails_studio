@@ -5,7 +5,7 @@ from django.urls import reverse_lazy
 from django.utils import timezone
 from django.views import View
 from django.views.generic import CreateView, UpdateView, DeleteView
-from datetime import datetime, time as datetime_time
+from datetime import datetime
 
 from online.forms import OnlineRecForm
 from online.models import OnlineRec
@@ -96,7 +96,7 @@ class OnlineRecCreateView(LoginRequiredMixin, CreateView):
         if user_appointments_this_month.count() >= 3:
             form.add_error(
                 None, 'Вы не можете создать более 3 записей в месяц. '
-                      'Пожалуйста, создайте запись в другом месяце.')
+                      'Пожалуйста, запишитесь на другой месяц.')
             return self.form_invalid(form)
 
         messages.success(self.request, 'Запись успешно создана!')
@@ -168,6 +168,9 @@ class OnlineRecUpdateView(LoginRequiredMixin, UpdateView):
                 'Пожалуйста, перенесите запись на другой месяц.'
             )
             return self.form_invalid(form)
+
+        if form.cleaned_data.get('service_type'):
+            form.instance.service_type = form.cleaned_data['service_type']
 
         if (original_date != new_date) or (original_time != new_time):
             form.instance.service_status = 'postponed'
